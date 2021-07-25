@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
+
+interface CanvasDrawIF {
+  clear: () => void;
+  undo: () => void;
+}
 
 export default function CanvasUI() {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
+
+  const canvas = useRef<any>(null);
 
   const colors = [
     "#000000",
@@ -18,11 +25,28 @@ export default function CanvasUI() {
   ];
   const sizes = [3, 6, 9, 12, 15];
 
+  function resetCanvas() {
+    canvas.current.clear();
+  }
+
+  function undoCanvas() {
+    canvas.current.undo();
+  }
+
+  function getCanvas(): String {
+    return canvas.current.getSaveData();
+  }
+
+  function loadCanvas(data: String, immediate: Boolean) {
+    return canvas.current.loadSaveData(data, immediate);
+  }
+
   return (
     <div className="flex">
       <div>
         <div className="rounded-xl overflow-hidden">
           <CanvasDraw
+            ref={canvas}
             brushColor={activeColor}
             catenaryColor="#fff"
             lazyRadius={0}
@@ -31,31 +55,43 @@ export default function CanvasUI() {
         </div>
         <div className="flex mt-2 justify-between">
           {colors.map((e) => (
-            <div
-              className="h-8 w-8 rounded-sm hover:rounded-xl transition-all flex justify-center items-center"
+            <button
+              className="h-8 w-8 rounded-md hover:rounded-xl transition-all flex justify-center items-center"
               style={{ backgroundColor: e }}
               onClick={() => setActiveColor(e)}
             >
               {activeColor === e && (
                 <div className="bg-white h-2 w-2 rounded-full"></div>
               )}
-            </div>
+            </button>
           ))}
         </div>
       </div>
-      <div className="ml-2 h-1/2 flex flex-col justify-between">
+      <div className="ml-2 flex flex-col justify-between">
+        <button
+          className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
+          onClick={undoCanvas}
+        >
+          &#8592;
+        </button>
+        <button
+          className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
+          onClick={resetCanvas}
+        >
+          &#8634;
+        </button>
         {sizes.map((e) => (
-          <div
+          <button
             className={`${
-              activeSize === e ? "bg-gray-600" : "bg-transparent"
+              activeSize === e ? "bg-gray-500" : "bg-transparent"
             } hover:bg-gray-600 rounded-xl flex justify-center items-center w-8 h-8`}
             onClick={() => setActiveSize(e)}
           >
             <div
               className="rounded-full bg-white"
-              style={{ height: e, width: e }}
+              style={{ height: e * 1.5, width: e * 1.5 }}
             ></div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
