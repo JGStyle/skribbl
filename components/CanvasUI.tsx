@@ -1,11 +1,6 @@
 import { useState, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 
-interface CanvasDrawIF {
-  clear: () => void;
-  undo: () => void;
-}
-
 export default function CanvasUI() {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
