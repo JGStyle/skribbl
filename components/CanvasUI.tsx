@@ -20,11 +20,11 @@ export default function CanvasUI() {
   ];
   const sizes = [3, 6, 9, 12, 15];
 
-  function resetCanvas() {
+  function resetCanvas(): void {
     canvas.current.clear();
   }
 
-  function undoCanvas() {
+  function undoCanvas(): void {
     canvas.current.undo();
   }
 
@@ -32,18 +32,18 @@ export default function CanvasUI() {
     return canvas.current.getSaveData();
   }
 
-  function loadCanvas(data: String, immediate: Boolean) {
-    return canvas.current.loadSaveData(data, immediate);
+  function loadCanvas(data: String, immediate: Boolean): void {
+    canvas.current.loadSaveData(data, immediate);
   }
 
   return (
     <div className="flex">
       <div>
-        <div className="rounded-xl overflow-hidden">
+        <div className="rounded-xl overflow-hidden cursor-none">
           <CanvasDraw
             ref={canvas}
             brushColor={activeColor}
-            catenaryColor="#fff"
+            catenaryColor={`${activeSize >= 9 ? "#fff" : "#000"}`}
             lazyRadius={0}
             brushRadius={activeSize}
           />
@@ -62,7 +62,7 @@ export default function CanvasUI() {
           ))}
         </div>
       </div>
-      <div className="ml-2 flex flex-col justify-between">
+      <div className="ml-2 flex flex-col justify-between pb-10">
         <button
           className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
           onClick={undoCanvas}
