@@ -46,6 +46,8 @@ export default function CanvasUI() {
             catenaryColor={`${activeSize >= 9 ? "#fff" : "#000"}`}
             lazyRadius={0}
             brushRadius={activeSize}
+            canvasWidth={700}
+            canvasHeight={500}
           />
         </div>
         <div className="flex mt-2 justify-between">
@@ -54,6 +56,7 @@ export default function CanvasUI() {
               className="h-8 w-8 rounded-md hover:rounded-xl transition-all flex justify-center items-center"
               style={{ backgroundColor: e }}
               onClick={() => setActiveColor(e)}
+              title="Change brush color"
             >
               {activeColor === e && (
                 <div className="bg-white h-2 w-2 rounded-full"></div>
@@ -66,14 +69,9 @@ export default function CanvasUI() {
         <button
           className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
           onClick={undoCanvas}
+          title="Undo last line"
         >
           &#8592;
-        </button>
-        <button
-          className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
-          onClick={resetCanvas}
-        >
-          &#8634;
         </button>
         {sizes.map((e) => (
           <button
@@ -81,6 +79,7 @@ export default function CanvasUI() {
               activeSize === e ? "bg-gray-500" : "bg-transparent"
             } hover:bg-gray-600 rounded-xl flex justify-center items-center w-8 h-8`}
             onClick={() => setActiveSize(e)}
+            title="Change brush width"
           >
             <div
               className="rounded-full bg-white"
@@ -88,6 +87,13 @@ export default function CanvasUI() {
             ></div>
           </button>
         ))}
+        <button
+          className="h-8 w-8 rounded-xl hover:bg-gray-600 text-white text-xl font-bold flex justify-center items-center"
+          onClick={resetCanvas}
+          title="Reset canvas"
+        >
+          &#8634;
+        </button>
       </div>
     </div>
   );
