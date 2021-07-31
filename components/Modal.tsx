@@ -1,11 +1,17 @@
+/*
+  just a try.. change whatever you want to
+*/
+
 export default function Modal({
   title,
   description,
   onConfirm,
+  close,
 }: {
   title: String;
   description: String;
   onConfirm: () => void;
+  close: () => void;
 }) {
   return (
     <div className="w-screen h-screen bg-white bg-opacity-10 backdrop-filter backdrop-blur-md fixed flex justify-center items-center">
@@ -17,6 +23,12 @@ export default function Modal({
           onClick={onConfirm}
         >
           Confirm
+        </button>
+        <button
+          className="mt-8 bg-black text-white px-4 py-2 rounded-xl"
+          onClick={close}
+        >
+          Cancel
         </button>
       </div>
     </div>
