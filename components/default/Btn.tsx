@@ -29,7 +29,7 @@ export default function Btn({
     case 1:
       return (
         <button
-          className="mt-8 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-xl"
+          className="mt-8 bg-white text-black hover:bg-gray-300 px-4 py-2 rounded-xl"
           onClick={click}
         >
           {content}

@@ -1,6 +1,7 @@
 import CanvasUI from "../components/CanvasUI";
 import Btn from "../components/default/Btn";
 import { variation as t } from "../components/default/Btn";
+import Input from "../components/default/Input";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
           content="danger"
         ></Btn>
       </div>
+      <Input placeholder="Input field"></Input>
     </div>
   );
 }
