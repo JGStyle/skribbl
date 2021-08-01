@@ -26,7 +26,7 @@ export default function Home() {
           content="danger"
         ></Btn>
       </div>
-      <Input placeholder="Input field"></Input>
+      <Input placeholder="Input field" change={() => console.log("t")} />
     </div>
   );
 }
