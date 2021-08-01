@@ -7,7 +7,7 @@ import Messageinput from "../components/chat/Messageinput";
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-main">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-main">
       <h1 className="text-white">test</h1>
       <CanvasUI />
       <div>
