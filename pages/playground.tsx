@@ -1,5 +1,5 @@
 import CanvasUI from "../components/CanvasUI";
-import Modal from "../components/Modal";
+import Modal from "../components/default/Modal";
 
 export default function Playground() {
   return (
