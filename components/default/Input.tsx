@@ -3,7 +3,7 @@ export default function Input({
   change,
 }: {
   placeholder: string;
-  change: () => void;
+  change: (event: any) => void;
 }) {
   return (
     <input
