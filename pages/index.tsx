@@ -1,46 +1,49 @@
 import CanvasUI from "../components/CanvasUI";
 import Btn from "../components/default/Btn";
 import { variation as t } from "../components/default/Btn";
-import Input from "../components/default/Input";
-import Message from "../components/chat/Message";
-import Messageinput from "../components/chat/Messageinput";
+import Chat from "../components/chat/Chat";
+import Sidebar from "../components/players/Sidebar";
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-main">
-      <h1 className="text-white">test</h1>
-      <CanvasUI />
-      <div>
-        <Btn click={() => console.log("t")} type={t.Dark} content="dark"></Btn>
-        <Btn
-          click={() => console.log("t")}
-          type={t.Light}
-          content="light"
-        ></Btn>
-        <Btn
-          click={() => console.log("t")}
-          type={t.Success}
-          content="success"
-        ></Btn>
-        <Btn
-          click={() => console.log("t")}
-          type={t.Danger}
-          content="danger"
-        ></Btn>
+    <div className="flex justify-center items-center min-h-screen bg-main">
+      <div className="mr-4">
+        <Sidebar
+          players={[
+            { name: "smorrin", id: "1", score: 750, wins: 2, status: "" },
+            { name: "JGStyle", id: "2", score: 250, wins: 1, status: "you" },
+            { name: "Hohe", id: "3", score: 300, wins: 2, status: "drawing" },
+            { name: "Thomas", id: "4", score: -300, wins: 0, status: "" },
+            { name: "Martin", id: "4", score: 1250, wins: 4, status: "" },
+          ]}
+        />
       </div>
-      <Input placeholder="Input field" change={() => console.log("t")} />
-      <Message
-        author="hohe"
-        content="A Crocodile? Bro this is some serious shit he is really old"
-        self={false}
-      />
-      <Message author="You" content="Apple Ice cream" self={true} />
-      <Message
-        author="smorrin"
-        content="Green swamp and a ball? Or is it something else this is just etxt to increase height"
-        self={false}
-      />
-      <Messageinput />
+      <CanvasUI />
+      <div className="ml-4">
+        <Chat
+          self="JGStyle"
+          messages={[
+            {
+              msg: "Green swamp ball and a snake? Or is it something else",
+              author: "smorrin",
+            },
+            { msg: "A Crocodile", author: "Hohe" },
+            { msg: "Apple Ice cream", author: "JGStyle" },
+            {
+              msg: "Green swamp ball and a snake?",
+              author: "smorrin",
+            },
+            { msg: "A Crocodile", author: "Hohe" },
+            { msg: "A Crocodile", author: "Mardin" },
+            { msg: "Apple Ice cream", author: "JGStyle" },
+            {
+              msg: "Green swamp ball and a snake? waller Or is it something else",
+              author: "smorrin",
+            },
+            { msg: "A Crocodile", author: "Thomas" },
+          ]}
+        ></Chat>
+      </div>
     </div>
   );
 }
