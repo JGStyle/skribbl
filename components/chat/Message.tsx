@@ -12,7 +12,7 @@ export default function Message({
 }) {
   return (
     <div
-      className={`w-96 rounded-3xl bg-white min-h-16 border-r-8 ${
+      className={`w-full rounded-3xl bg-white min-h-16 border-r-8 ${
         self === true ? "border-blue-400" : "border-pink-400"
       } py-2 px-4 mb-3`}
       id={author}

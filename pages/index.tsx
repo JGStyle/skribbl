@@ -59,6 +59,20 @@ export default function Home() {
                 },
                 { msg: "Apple Ice cream", author: "JGStyle" },
                 { msg: "A Croddodile", author: "Thomas" },
+                {
+                  msg: "reen swamp ball andd a snake? Or is it something else",
+                  author: "smorrin",
+                },
+                { msg: "pple Ice cream", author: "JGStyle" },
+                { msg: "A rCoddodile", author: "Thomas" },
+                { msg: "Apsdlfkjple Ice cream", author: "JGStyle" },
+                { msg: "A Croddsalodile", author: "Thomas" },
+                {
+                  msg: "reen swamlkjp ball andd a snake? Or is it something else",
+                  author: "smorrin",
+                },
+                { msg: "pple Ice cream", author: "JGStyle" },
+                { msg: "A rCoddodile", author: "Thomas" },
               ]}
             ></Chat>
           </div>
