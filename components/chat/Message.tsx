@@ -18,14 +18,7 @@ export default function Message({
       id={author}
     >
       <h3 className="font-semibold">{author}</h3>
-      <h4
-        dangerouslySetInnerHTML={{
-          __html: content.replace(
-            /waller/g,
-            '<span style="color:blue;">Waller</span>'
-          ),
-        }}
-      ></h4>
+      <h4>{content}</h4>
     </div>
   );
 }

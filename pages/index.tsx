@@ -3,6 +3,7 @@ import Btn from "../components/default/Btn";
 import { variation as t } from "../components/default/Btn";
 import Chat from "../components/chat/Chat";
 import Sidebar from "../components/players/Sidebar";
+import Messageinput from "../components/chat/Messageinput";
 
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
             }}
           ></Btn>
         </div>
-        <div className="flex justify-center ">
+        <div className="flex justify-center">
           <div className="mr-4">
             <Sidebar
               players={[

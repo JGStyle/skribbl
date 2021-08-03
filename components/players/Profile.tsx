@@ -15,7 +15,7 @@ export default function Profile({
 }) {
   const { name, score, wins, status } = player;
   return (
-    <div className="bg-white group flex items-center w-96 rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all">
+    <div className="bg-white flex w-full group items-center rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all">
       <div>
         <div className="h-7 w-7 group-hover:h-20 group-hover:w-20 transition-all bg-rose-600 mr-3 rounded-lg"></div>
       </div>
@@ -28,13 +28,13 @@ export default function Profile({
           </button>
         )}
       </div>
-      {status !== "" && (
-        <div>
+      <div>
+        {status !== "" && (
           <h4 className="rounded-full text-lg py-1 px-2 mr-3 bg-indigo-500 text-white">
             {status}
           </h4>
-        </div>
-      )}
+        )}
+      </div>
       <div>
         <h3 className="font-semibold text-3xl">{wins}</h3>
       </div>

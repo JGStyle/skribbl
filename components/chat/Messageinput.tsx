@@ -15,7 +15,7 @@ export default function Messageinput() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex mt-3">
       <Input placeholder="Message.." change={updateMessage} />
       <Btn type={t.Success} content="Send" click={sendMessage} />
     </div>
