@@ -1,4 +1,4 @@
-import CanvasUI from "../components/CanvasUI";
+import CanvasUI from "../components/game/CanvasUI";
 import Modal from "../components/default/Modal";
 
 export default function Playground() {
