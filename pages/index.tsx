@@ -30,22 +30,6 @@ export default function Home() {
             <Sidebar
               players={[
                 { name: "smorrin", id: "1", score: 750, wins: 2, status: "" },
-                {
-                  name: "JGStyle",
-                  id: "2",
-                  score: 250,
-                  wins: 1,
-                  status: "you",
-                },
-                {
-                  name: "Hohe",
-                  id: "3",
-                  score: 300,
-                  wins: 2,
-                  status: "drawing",
-                },
-                { name: "Thomas", id: "4", score: -300, wins: 0, status: "" },
-                { name: "Martin", id: "5", score: 1250, wins: 4, status: "" },
               ]}
             />
           </div>
@@ -53,28 +37,7 @@ export default function Home() {
           <div className="ml-4">
             <Chat
               self="JGStyle"
-              messages={[
-                {
-                  msg: "Green swamp ball andd a snake? Or is it something else",
-                  author: "smorrin",
-                },
-                { msg: "Apple Ice cream", author: "JGStyle" },
-                { msg: "A Croddodile", author: "Thomas" },
-                {
-                  msg: "reen swamp ball andd a snake? Or is it something else",
-                  author: "smorrin",
-                },
-                { msg: "pple Ice cream", author: "JGStyle" },
-                { msg: "A rCoddodile", author: "Thomas" },
-                { msg: "Apsdlfkjple Ice cream", author: "JGStyle" },
-                { msg: "A Croddsalodile", author: "Thomas" },
-                {
-                  msg: "reen swamlkjp ball andd a snake? Or is it something else",
-                  author: "smorrin",
-                },
-                { msg: "pple Ice cream", author: "JGStyle" },
-                { msg: "A rCoddodile", author: "Thomas" },
-              ]}
+              messages={[{ msg: "A rCoddodile", author: "Thomas" }]}
             ></Chat>
           </div>
         </div>
