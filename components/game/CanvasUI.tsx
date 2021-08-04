@@ -48,7 +48,7 @@ export default function CanvasUI() {
               lazyRadius={0}
               brushRadius={activeSize}
               canvasWidth={700}
-              canvasHeight={500}
+              canvasHeight={550}
             />
           </div>
           <div className="flex mt-2 justify-between">

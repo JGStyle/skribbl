@@ -11,6 +11,11 @@ module.exports = {
       main: "#374151",
       ...colors,
     },
+    screens: {
+      //   tablet: "640px",
+      lg: "1300px",
+      //   desktop: "1380px",
+    },
     extend: {},
   },
   variants: {

@@ -16,7 +16,7 @@ export default function Chat({
   return (
     <div
       className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm"
-      style={{ height: "720px" }}
+      style={{ maxHeight: "720px", height: "100%" }}
     >
       <div className="overflow-y-auto h-full">
         {messages.map((e: Message) => (
