@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Message from "./Message";
 import Messageinput from "./Messageinput";
 
@@ -13,13 +14,29 @@ export default function Chat({
   messages: Array<Message>;
   self: string;
 }) {
+  const [chat, setChat] = useState([]);
+
+  useEffect(() => {
+    // @ts-ignore
+    setChat(messages);
+  }, []);
+
+  function addMessage(msg: Message) {
+    // @ts-ignore
+    setChat((prev) => [...prev, msg]);
+  }
+
+  useEffect(() => {
+    console.log("chat state changed: ", chat);
+  }, [chat]);
+
   return (
     <div
-      className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm"
-      style={{ maxHeight: "720px", height: "100%" }}
+      className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm h-full"
+      style={{ maxHeight: "720px" }}
     >
       <div className="overflow-y-auto h-full">
-        {messages.map((e: Message) => (
+        {chat.map((e: Message) => (
           <Message
             key={e.msg}
             content={e.msg}
@@ -28,7 +45,11 @@ export default function Chat({
           />
         ))}
       </div>
-      <Messageinput />
+      <Messageinput
+        sendMessage={(m) => {
+          addMessage({ msg: m, author: "You" });
+        }}
+      />
     </div>
   );
 }
