@@ -17,7 +17,7 @@ export default function Home() {
               ]}
             />
           </div>
-          <CanvasUI disabled={true} />
+          <CanvasUI disabled={false} word="banana" />
           <div className="ml-4">
             <Chat
               self="JGStyle"

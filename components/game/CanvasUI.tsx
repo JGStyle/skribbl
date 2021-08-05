@@ -1,7 +1,13 @@
 import { useState, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 
-export default function CanvasUI({ disabled }: { disabled: boolean }) {
+export default function CanvasUI({
+  disabled,
+  word,
+}: {
+  disabled: boolean;
+  word: string;
+}) {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
 
@@ -43,6 +49,11 @@ export default function CanvasUI({ disabled }: { disabled: boolean }) {
   return (
     <div>
       <div className="flex">
+        {!disabled && (
+          <h1 className="absolute px-2 py-1 rounded-br-lg bg-main text-white z-30">
+            {word}
+          </h1>
+        )}
         <div>
           <div
             className={`rounded-xl overflow-hidden ${
