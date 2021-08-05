@@ -17,7 +17,7 @@ export default function Home() {
               ]}
             />
           </div>
-          <CanvasUI />
+          <CanvasUI disabled={true} />
           <div className="ml-4">
             <Chat
               self="JGStyle"
@@ -27,7 +27,7 @@ export default function Home() {
         </div>
         {/* uncomment to show wordpicker */}
         {/* <Wordpicker
-          words={["hamburger", "apple", "ball"]}
+          words={["hamburger", "applple", "ballapple"]}
           chooseWord={(w) => {
             console.log(w);
           }}

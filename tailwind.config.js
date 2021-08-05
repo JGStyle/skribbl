@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     cursor: {
       none: "none",
+      "not-allowed": "not-allowed",
     },
     colors: {
       main: "#374151",

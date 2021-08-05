@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 
-export default function CanvasUI() {
+export default function CanvasUI({ disabled }: { disabled: boolean }) {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
 
@@ -21,11 +21,15 @@ export default function CanvasUI() {
   const sizes = [3, 6, 9, 12, 15];
 
   function resetCanvas(): void {
-    canvas.current.clear();
+    if (!disabled) {
+      canvas.current.clear();
+    }
   }
 
   function undoCanvas(): void {
-    canvas.current.undo();
+    if (!disabled) {
+      canvas.current.undo();
+    }
   }
 
   function getCanvas(): String {
@@ -40,8 +44,13 @@ export default function CanvasUI() {
     <div>
       <div className="flex">
         <div>
-          <div className="rounded-xl overflow-hidden cursor-none">
+          <div
+            className={`rounded-xl overflow-hidden ${
+              disabled ? "cursor-not-allowed" : "cursor-none"
+            }`}
+          >
             <CanvasDraw
+              disabled={disabled}
               ref={canvas}
               brushColor={activeColor}
               catenaryColor={`${activeSize >= 9 ? "#fff" : "#000"}`}
