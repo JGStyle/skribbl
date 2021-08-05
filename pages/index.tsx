@@ -2,6 +2,7 @@ import CanvasUI from "../components/game/CanvasUI";
 import Chat from "../components/chat/Chat";
 import Sidebar from "../components/players/Sidebar";
 import Topbar from "../components/game/Topbar";
+import Wordpicker from "../components/game/Wordpicker";
 
 export default function Home() {
   return (
@@ -24,6 +25,13 @@ export default function Home() {
             ></Chat>
           </div>
         </div>
+        {/* uncomment to show wordpicker */}
+        {/* <Wordpicker
+          words={["hamburger", "apple", "ball"]}
+          chooseWord={(w) => {
+            console.log(w);
+          }}
+        /> */}
       </div>
     </div>
   );
