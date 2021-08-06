@@ -22,13 +22,13 @@ export default function Modal({
           className="mt-8 bg-black text-white px-4 py-2 rounded-xl"
           onClick={onConfirm}
         >
-          Confirm
+          confirm
         </button>
         <button
           className="mt-8 bg-black text-white px-4 py-2 rounded-xl"
           onClick={close}
         >
-          Cancel
+          cancel
         </button>
       </div>
     </div>

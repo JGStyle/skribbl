@@ -20,7 +20,7 @@ export default function Wordpicker({
         style={{ width: "400px", zIndex: 20 }}
       >
         <h3 className="font-bold text-white text-3xl">
-          Choose the word you want to draw.
+          choose the word you want to draw
         </h3>
         <div className="flex flex-wrap gap-2 mt-7">
           {words.map((e) => (
