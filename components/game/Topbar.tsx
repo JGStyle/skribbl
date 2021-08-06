@@ -16,7 +16,7 @@ export default function Topbar({
         <h3 className="font-semibold text-xl mr-3 p-2 bg-blue-500 rounded-full">
           {time}s
         </h3>
-        <h3 className="font-semibold text-xl">Round {round}</h3>
+        <h3 className="font-semibold text-xl">round {round}</h3>
       </div>
       <h3 className="font-bold text-2xl">{roomname}</h3>
       <Btn

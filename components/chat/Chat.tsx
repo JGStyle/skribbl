@@ -47,7 +47,7 @@ export default function Chat({
       </div>
       <Messageinput
         sendMessage={(m) => {
-          addMessage({ msg: m, author: "You" });
+          addMessage({ msg: m, author: "you" });
         }}
       />
     </div>
