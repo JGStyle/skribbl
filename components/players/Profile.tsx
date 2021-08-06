@@ -21,10 +21,10 @@ export default function Profile({
       </div>
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>
-        <h3 className="font-semibold ">score: {score}</h3>
+        {score !== 0 && <h3 className="font-semibold ">score: {score}</h3>}
         {admin && (
           <button className="hidden group-hover:inline-block bg-black rounded-lg text-white py-1 px-2 hover:bg-gray-800">
-            Kick
+            kick
           </button>
         )}
       </div>

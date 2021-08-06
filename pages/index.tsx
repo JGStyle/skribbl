@@ -15,6 +15,7 @@ export default function Home() {
               players={[
                 { name: "smorrin", id: "1", score: 750, wins: 2, status: "" },
               ]}
+              admin={true}
             />
           </div>
           <CanvasUI disabled={false} word="banana" />
