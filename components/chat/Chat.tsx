@@ -26,10 +26,6 @@ export default function Chat({
     setChat((prev) => [...prev, msg]);
   }
 
-  useEffect(() => {
-    console.log("chat state changed: ", chat);
-  }, [chat]);
-
   return (
     <div
       className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm h-full"

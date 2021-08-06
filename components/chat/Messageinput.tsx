@@ -1,33 +1,37 @@
 import Input from "../default/Input";
 import Btn from "../default/Btn";
 import { variation as t } from "../default/Btn";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Messageinput({
   sendMessage,
 }: {
   sendMessage: (m: string) => void;
 }) {
-  const [message, setMessage] = useState("");
+  const [message, _setMessage] = useState("");
+  const msgRef = useRef(message);
+
+  // @ts-ignore
+  const setMessage = (data) => {
+    msgRef.current = data;
+    _setMessage(data);
+  };
 
   function send(msg: string) {
     sendMessage(msg);
-    clear();
   }
 
   useEffect(() => {
     addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
-        sendMessage(message);
+        console.log(msgRef.current);
+        sendMessage(msgRef.current);
       }
     });
   }, []);
 
   function updateMessage(event: any) {
     setMessage(event.target.value);
-  }
-  function clear() {
-    setMessage("");
   }
 
   return (
