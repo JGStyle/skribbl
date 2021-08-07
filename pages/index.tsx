@@ -1,38 +1,28 @@
-import CanvasUI from "../components/game/CanvasUI";
-import Chat from "../components/chat/Chat";
-import Sidebar from "../components/players/Sidebar";
-import Topbar from "../components/game/Topbar";
-import Wordpicker from "../components/game/Wordpicker";
+import Btn from "../components/default/Btn";
+import { variation as t } from "../components/default/Btn";
 
 export default function Home() {
+  function createRoom() {
+    // TODO
+  }
+
   return (
-    <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
-      <div className="flex flex-col">
-        <Topbar roomname="Peters raum" time={30} round="3/5" />
-        <div className="flex justify-center">
-          <div className="mr-4 lg:block hidden">
-            <Sidebar
-              players={[
-                { name: "smorrin", id: "1", score: 750, wins: 2, status: "" },
-              ]}
-              admin={true}
-            />
-          </div>
-          <CanvasUI disabled={false} word="banana" />
-          <div className="ml-4">
-            <Chat
-              self="JGStyle"
-              messages={[{ msg: "A rCoddodile", author: "Thomas" }]}
-            ></Chat>
-          </div>
+    <div className="flex flex-col justify-center items-center h-screen bg-main text-white">
+      <div className="text-center w-2/3 flex flex-col">
+        <h1 className="text-9xl font-black inline-block">skribbl</h1>
+        <h2 className="text-4xl font-bold mb-8 text-center inline-block">
+          <span className="text-blue-500 mr-2">you draw</span>
+          the word that is given to you while the{" "}
+          <span className="text-blue-500">others</span> try to{" "}
+          <span className="text-blue-500">guess</span> it
+        </h2>
+        <div>
+          <Btn
+            type={t.Success}
+            content="&rarr; create room"
+            click={createRoom}
+          />
         </div>
-        {/* uncomment to show wordpicker */}
-        {/* <Wordpicker
-          words={["hamburger", "applple", "ballapple"]}
-          chooseWord={(w) => {
-            console.log(w);
-          }}
-        /> */}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
@@ -26,6 +27,7 @@ module.exports = {
       height: ["hover", "group-hover"],
       width: ["hover", "group-hover"],
       display: ["hover", "group-hover"],
+      backgroundColor: ["active"],
     },
   },
   plugins: [],

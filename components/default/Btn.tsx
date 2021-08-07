@@ -40,7 +40,7 @@ export default function Btn({
     case 2:
       return (
         <button
-          className="bg-green-500 hover:bg-green-400 text-white px-4 py-2.5 rounded-xl"
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2.5 rounded-xl"
           onClick={click}
         >
           {content}
