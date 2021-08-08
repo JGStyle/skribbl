@@ -17,7 +17,7 @@ export default function Profile({
   return (
     <div className="bg-white flex w-full group items-center rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all">
       <div>
-        <div className="h-7 w-7 group-hover:h-20 group-hover:w-20 transition-all bg-rose-600 mr-3 rounded-lg"></div>
+        <div className="h-9 w-9 group-hover:h-20 group-hover:w-20 transition-all bg-rose-600 mr-3 rounded-lg"></div>
       </div>
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>

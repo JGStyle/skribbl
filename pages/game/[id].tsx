@@ -13,7 +13,8 @@ export default function Home() {
           <div className="mr-4 lg:block hidden">
             <Sidebar
               players={[
-                { name: "smorrin", id: "1", score: 750, wins: 2, status: "" },
+                { name: "alisia", id: "1", score: 750, wins: 2, status: "" },
+                { name: "josef", id: "1", score: 750, wins: 2, status: "" },
               ]}
               admin={true}
             />
@@ -22,7 +23,9 @@ export default function Home() {
           <div className="ml-4">
             <Chat
               self="JGStyle"
-              messages={[{ msg: "A rCoddodile", author: "Thomas" }]}
+              messages={[
+                { msg: "Cooles Spiel", author: "Alisia", color: "#000" },
+              ]}
             ></Chat>
           </div>
         </div>

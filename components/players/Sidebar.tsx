@@ -18,7 +18,7 @@ export default function Sidebar({
   return (
     <div
       className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm"
-      style={{ maxHeight: "720px", height: "100%", width: "350px" }}
+      style={{ maxHeight: "590px", height: "100%", width: "350px" }}
     >
       <div className="overflow-y-auto">
         {players.map((e: Player) => (

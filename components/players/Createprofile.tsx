@@ -29,7 +29,7 @@ export default function Createprofile() {
   const canvas = useRef<any>(null);
 
   function join() {
-    console.log(username);
+    console.log(username, color);
   }
 
   function reset() {
@@ -54,7 +54,13 @@ export default function Createprofile() {
         </div>
       </div>
       <div className="p-4">
-        <h2 className="text-white font-semibold text-3xl mb-2">username</h2>
+        <div className="flex items-center">
+          <div
+            className="h-6 w-6 rounded-full mr-2 transform -translate-y-1"
+            style={{ backgroundColor: color }}
+          ></div>
+          <h2 className="text-white font-semibold text-3xl mb-2">username</h2>
+        </div>
         <Input placeholder="username" change={updateUsername} />
         <div className="mt-6">
           <div className="flex gap-x-2">

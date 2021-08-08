@@ -14,6 +14,7 @@ export default function CanvasUI({
   const canvas = useRef<any>(null);
 
   const colors = [
+    "#fff",
     "#000000",
     "#6B7280",
     "#EF4444",
