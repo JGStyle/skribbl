@@ -61,7 +61,11 @@ export default function Createprofile() {
           ></div>
           <h2 className="text-white font-semibold text-3xl mb-2">username</h2>
         </div>
-        <Input placeholder="username" change={updateUsername} />
+        <Input
+          placeholder="username"
+          change={updateUsername}
+          value={username}
+        />
         <div className="mt-6">
           <div className="flex gap-x-2">
             <Btn click={reset} content="reset" type={t.Dark} />

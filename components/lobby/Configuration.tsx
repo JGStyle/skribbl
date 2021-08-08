@@ -36,7 +36,11 @@ export default function Config({ admin }: { admin: boolean }) {
         <h1 className="font-semibold text-4xl">game config</h1>
         <div>
           <h2 className="text-xl mb-2">room name</h2>
-          <Input placeholder="123theavengers" change={updateRoomname} />
+          <Input
+            placeholder="123theavengers"
+            change={updateRoomname}
+            value={roomname}
+          />
         </div>
         <div>
           <h2 className="text-xl mb-2">rounds</h2>
@@ -113,6 +117,7 @@ export default function Config({ admin }: { admin: boolean }) {
           <Input
             placeholder="ferrari, porsche, tesla"
             change={updateCustomwords}
+            value={customwords}
           />
         </div>
         <Btn type={t.Success} content="&rarr; start game" click={startgame} />

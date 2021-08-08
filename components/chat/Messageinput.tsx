@@ -21,11 +21,15 @@ export default function Messageinput({
     sendMessage(msg);
   }
 
+  function clearInput() {
+    setMessage("");
+  }
+
   useEffect(() => {
     addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
-        console.log(msgRef.current);
         sendMessage(msgRef.current);
+        clearInput();
       }
     });
   }, []);
@@ -36,7 +40,7 @@ export default function Messageinput({
 
   return (
     <div className="flex mt-3">
-      <Input placeholder="Message.." change={updateMessage} />
+      <Input placeholder="Message.." change={updateMessage} value={message} />
       <Btn type={t.Success} content="Send" click={() => send(message)} />
     </div>
   );
