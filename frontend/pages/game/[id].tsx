@@ -26,12 +26,12 @@ export default function Home() {
               messages={[
                 { msg: "Cooles Spiel", author: "Alisia", color: "#000" },
               ]}
-            ></Chat>
+            />
           </div>
         </div>
         {/* uncomment to show wordpicker */}
         {/* <Wordpicker
-          words={["hamburger", "applple", "ballapple"]}
+          words={["hamburger", "apple", "ball"]}
           chooseWord={(w) => {
             console.log(w);
           }}
