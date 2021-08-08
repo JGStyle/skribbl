@@ -2,18 +2,18 @@
 
 # dependencies
 node_modules/
-/frontend/.pnp
+.pnp
 .pnp.js
 
 # testing
-/frontend/coverage
+coverage
 
 # next.js
-/frontend/.next/
-/forntend/out/
+.next/
+out/
 
 # production
-/frontend/build
+build
 
 # misc
 .DS_Store
