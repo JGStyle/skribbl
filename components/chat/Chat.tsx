@@ -40,7 +40,7 @@ export default function Chat({
       className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm h-full"
       style={{ maxHeight: "590px" }}
     >
-      <div className="overflow-y-auto h-full" id="chat">
+      <div className="overflow-y-auto h-full">
         {chat.map((e: Message) => (
           <Message
             key={e.msg}
