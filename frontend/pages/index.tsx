@@ -24,6 +24,29 @@ export default function Home() {
           />
         </div>
       </div>
+      <footer className="absolute bottom-2">
+        Made with &#9825; by
+        <a
+          href="https://github.com/JGStyle"
+          className="ml-1 mr-1 text-blue-500 hover:underline"
+        >
+          Josef Schmid
+        </a>
+        with
+        <a
+          href="https://github.com/smorrin28"
+          className="ml-1 mr-1 text-blue-500 hover:underline"
+        >
+          smorrin
+        </a>
+        and
+        <a
+          href="https://github.com/jonas.honestatter28"
+          className="ml-1 mr-1 text-blue-500 hover:underline"
+        >
+          Hohe
+        </a>
+      </footer>
     </div>
   );
 }
