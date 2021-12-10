@@ -7,7 +7,10 @@ import { variation as t } from "../default/Btn";
 export default function Createprofile() {
   const [username, setUsername] = useState("");
   function updateUsername(event: any) {
-    setUsername(event.target.value);
+    let name = event.target.value;
+    if (name.length < 13) {
+      setUsername(name);
+    }
   }
 
   const [color, setColor] = useState("#fff");
@@ -54,12 +57,12 @@ export default function Createprofile() {
         </div>
       </div>
       <div className="p-4">
-        <div className="flex items-center">
+        <div className="flex items-center h-11">
           <div
             className="h-6 w-6 rounded-full mr-2 transform -translate-y-1"
             style={{ backgroundColor: color }}
           ></div>
-          <h2 className="text-white font-semibold text-3xl mb-2">username</h2>
+          <h2 className="text-white font-semibold text-3xl mb-2">{username}</h2>
         </div>
         <Input
           placeholder="username"

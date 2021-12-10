@@ -32,20 +32,6 @@ export default function Home() {
         >
           Josef Schmid
         </a>
-        with
-        <a
-          href="https://github.com/smorrin28"
-          className="ml-1 mr-1 text-blue-500 hover:underline"
-        >
-          smorrin
-        </a>
-        and
-        <a
-          href="https://github.com/jonas.honestatter28"
-          className="ml-1 mr-1 text-blue-500 hover:underline"
-        >
-          Hohe
-        </a>
       </footer>
     </div>
   );
