@@ -32,7 +32,11 @@ export default function Createprofile() {
   const canvas = useRef<any>(null);
 
   function join() {
-    console.log(username, color);
+    console.log(username, color, getData());
+  }
+
+  function getData() {
+    return canvas.current.getSaveData();
   }
 
   function reset() {

@@ -30,12 +30,12 @@ export default function Home() {
           </div>
         </div>
         {/* uncomment to show wordpicker */}
-        {/* <Wordpicker
+        <Wordpicker
           words={["hamburger", "apple", "ball"]}
           chooseWord={(w) => {
             console.log(w);
           }}
-        /> */}
+        />
       </div>
     </div>
   );
