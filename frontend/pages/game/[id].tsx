@@ -3,30 +3,51 @@ import Chat from "../../components/chat/Chat";
 import Sidebar from "../../components/players/Sidebar";
 import Topbar from "../../components/game/Topbar";
 import Wordpicker from "../../components/game/Wordpicker";
+import { useState } from "react";
 
 export default function Home() {
+  const [time, setTime] = useState(30);
+  const [activeRound, setActiveRound] = useState(1);
+  const [maxRound, setMaxRound] = useState(5);
+
+  function startTimer(seconds: number) {
+    let timer = seconds;
+    setTime(timer);
+    const i = setInterval(() => {
+      if (timer <= 0) {
+        clearInterval(i);
+      } else {
+        timer -= 1;
+        setTime(timer);
+      }
+    }, 1000);
+  }
   return (
     <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
       <div className="flex flex-col">
-        <Topbar roomname="Peters raum" time={30} round="3/5" />
+        <Topbar
+          roomname="Peters raum"
+          time={time}
+          round={`${activeRound}/${maxRound}`}
+        />
         <div className="flex justify-center">
           <div className="mr-4 lg:block hidden">
             <Sidebar
               players={[
                 {
-                  name: "alisia",
+                  name: "a",
                   id: "1",
                   score: 750,
                   wins: 2,
-                  status: "host",
+                  status: "",
                   guessed: true,
                 },
                 {
-                  name: "josef",
+                  name: "j",
                   id: "1",
                   score: 750,
                   wins: 2,
-                  status: "active",
+                  status: "",
                   guessed: false,
                 },
               ]}
