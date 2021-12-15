@@ -130,7 +130,7 @@ export default function Config({ admin }: { admin: boolean }) {
         style={{ width: "350px" }}
       >
         <h1 className="text-white text-2xl font-semibold text-center mb-4 px-16">
-          waiting for host to start game
+          waiting for host to start the game
         </h1>
 
         <div className="flex gap-2 animate-bounce">

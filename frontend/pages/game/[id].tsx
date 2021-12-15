@@ -3,8 +3,9 @@ import Chat from "../../components/chat/Chat";
 import Sidebar from "../../components/players/Sidebar";
 import Topbar from "../../components/game/Topbar";
 import Wordpicker from "../../components/game/Wordpicker";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CanvasRef from "../../models/CanasRef";
+import Player from "../../models/Player";
 
 export default function Home() {
   const [time, setTime] = useState(30);
@@ -14,7 +15,42 @@ export default function Home() {
   const [disableCanvas, setDisableCanvas] = useState(false);
   const [activeWord, setActiveWord] = useState("activeword");
   const [selectWords, setSelectWord] = useState([]); //["hamburger", "apple", "ball"]
+  const [players, setPlayers] = useState([
+    {
+      name: "player a",
+      id: "3asd",
+      score: 100,
+      wins: 4,
+      status: "status",
+      guessed: false,
+      color: "#FFFFFF",
+      profile: "abc",
+    },
+  ]);
   const canvas = useRef<CanvasRef>(null);
+
+  useEffect(() => {
+    console.log(players);
+  }, [players]);
+
+  function addPlayer(player: Player) {
+    // @ts-ignore
+    setPlayers((prev) => [...prev, player]);
+  }
+
+  function removePlayer(id: String) {
+    // @ts-ignore
+    let cp = players.slice();
+    for (let i = 0; i < cp.length; i++) {
+      // @ts-ignore
+      console.log(cp[i].id);
+      if (cp[i].id == id) {
+        cp.splice(i, 1);
+        break;
+      }
+    }
+    setPlayers(cp);
+  }
 
   function startTimer(seconds: number) {
     let timer = seconds;
@@ -50,27 +86,7 @@ export default function Home() {
         />
         <div className="flex justify-center">
           <div className="mr-4 lg:block hidden">
-            <Sidebar
-              players={[
-                {
-                  name: "a",
-                  id: "1",
-                  score: 750,
-                  wins: 2,
-                  status: "",
-                  guessed: false,
-                },
-                {
-                  name: "j",
-                  id: "2",
-                  score: 750,
-                  wins: 2,
-                  status: "",
-                  guessed: false,
-                },
-              ]}
-              admin={true}
-            />
+            <Sidebar players={players} admin={true} />
           </div>
           <CanvasUI disabled={disableCanvas} word={activeWord} ref={canvas} />
           <div className="ml-4">
@@ -94,6 +110,7 @@ export default function Home() {
             }}
           />
         )}
+        <button onClick={() => removePlayer("3asd")}>Click me</button>
       </div>
     </div>
   );

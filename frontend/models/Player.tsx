@@ -4,5 +4,7 @@ export default interface Player {
   wins: number;
   status: string;
   guessed: boolean;
+  color: string;
+  profile: string;
   id: string;
 }
