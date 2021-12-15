@@ -1,6 +1,7 @@
 import { useState, useRef, Ref, useImperativeHandle, forwardRef } from "react";
 import CanvasDraw from "react-canvas-draw";
 import CanvasRef from "../../models/CanasRef";
+import colors from "../default/Colors";
 
 export default forwardRef(function CanvasUI(
   {
@@ -19,18 +20,6 @@ export default forwardRef(function CanvasUI(
 
   const canvas = useRef<any>(null);
 
-  const colors = [
-    "#fff",
-    "#000000",
-    "#6B7280",
-    "#EF4444",
-    "#F59E0B",
-    "#10B981",
-    "#3B82F6",
-    "#6366F1",
-    "#8B5CF6",
-    "#EC4899",
-  ];
   const sizes = [3, 6, 9, 12, 15];
 
   function resetCanvas(): void {

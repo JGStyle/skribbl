@@ -72,7 +72,6 @@ export default function Home() {
               admin={true}
             />
           </div>
-          {/* ts-ignore */}
           <CanvasUI disabled={disableCanvas} word={activeWord} ref={canvas} />
           <div className="ml-4">
             <Chat
@@ -95,7 +94,6 @@ export default function Home() {
             }}
           />
         )}
-        <button onClick={() => startTimer(30)}>action</button>
       </div>
     </div>
   );
