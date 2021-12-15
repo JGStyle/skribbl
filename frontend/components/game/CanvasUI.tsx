@@ -1,15 +1,21 @@
-import { useState, useRef } from "react";
+import { useState, useRef, Ref, useImperativeHandle, forwardRef } from "react";
 import CanvasDraw from "react-canvas-draw";
+import CanvasRef from "../../models/CanasRef";
 
-export default function CanvasUI({
-  disabled,
-  word,
-}: {
-  disabled: boolean;
-  word: string;
-}) {
+export default forwardRef(function CanvasUI(
+  {
+    disabled,
+    word,
+  }: {
+    disabled: boolean;
+    word: string;
+  },
+  ref: Ref<CanvasRef>
+) {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
+
+  useImperativeHandle(ref, () => ({ getCanvas, loadCanvas, resetCanvas }));
 
   const canvas = useRef<any>(null);
 
@@ -122,4 +128,4 @@ export default function CanvasUI({
       </div>
     </div>
   );
-}
+});
