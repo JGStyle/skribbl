@@ -3,6 +3,7 @@ interface Player {
   score: number;
   wins: number;
   status: string;
+  guessed: boolean;
   id: string;
 }
 
@@ -13,15 +14,21 @@ export default function Profile({
   player: Player;
   admin: boolean;
 }) {
-  const { name, score, wins, status } = player;
+  const { name, score, wins, status, guessed } = player;
   return (
-    <div className="bg-white flex w-full group items-center rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all">
+    <div
+      className={`${
+        guessed
+          ? "bg-gradient-to-r from-white via-white to-green-600"
+          : "bg-white"
+      } flex w-full group items-center rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all`}
+    >
       <div>
         <div className="h-10 w-10 group-hover:h-24 group-hover:w-24 transition-all bg-rose-600 mr-3 rounded-lg"></div>
       </div>
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>
-        {score !== 0 && <h3 className="font-semibold ">score: {score}</h3>}
+        {score !== 0 && <h3 className="font-semibold">score: {score}</h3>}
         {admin && (
           <button className="hidden group-hover:inline-block bg-black rounded-lg text-white py-1 px-2 hover:bg-gray-800">
             kick
@@ -36,7 +43,13 @@ export default function Profile({
         )}
       </div>
       <div>
-        <h3 className="font-semibold text-3xl">{wins}</h3>
+        <h3
+          className={`${
+            guessed ? "text-white" : "text-black"
+          } font-semibold text-3xl`}
+        >
+          {wins}
+        </h3>
       </div>
     </div>
   );

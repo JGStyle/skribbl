@@ -13,8 +13,22 @@ export default function Home() {
           <div className="mr-4 lg:block hidden">
             <Sidebar
               players={[
-                { name: "alisia", id: "1", score: 750, wins: 2, status: "" },
-                { name: "josef", id: "1", score: 750, wins: 2, status: "" },
+                {
+                  name: "alisia",
+                  id: "1",
+                  score: 750,
+                  wins: 2,
+                  status: "host",
+                  guessed: true,
+                },
+                {
+                  name: "josef",
+                  id: "1",
+                  score: 750,
+                  wins: 2,
+                  status: "active",
+                  guessed: false,
+                },
               ]}
               admin={true}
             />
@@ -24,18 +38,22 @@ export default function Home() {
             <Chat
               self="JGStyle"
               messages={[
-                { msg: "Cooles Spiel", author: "Alisia", color: "#000" },
+                {
+                  msg: "Cooles Spiel",
+                  author: "Alisia",
+                  color: "#000",
+                },
               ]}
             />
           </div>
         </div>
         {/* uncomment to show wordpicker */}
-        <Wordpicker
+        {/* <Wordpicker
           words={["hamburger", "apple", "ball"]}
           chooseWord={(w) => {
             console.log(w);
           }}
-        />
+        /> */}
       </div>
     </div>
   );

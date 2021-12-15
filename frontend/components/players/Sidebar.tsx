@@ -5,6 +5,7 @@ interface Player {
   score: number;
   wins: number;
   status: string;
+  guessed: boolean;
   id: string;
 }
 
