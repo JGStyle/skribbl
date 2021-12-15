@@ -1,11 +1,19 @@
 # Realtime drawing with your friends
 
-Guess the drawing
+This is an open source alternative to skribbl.io. 
+The Frontend is almost completely done, while the backend is currently in development. Feel free to submit pull requests
 
-## Frontend
+## Techstack
+
+### Frontend
 
  - NextJS
  - Typescript
  - TailwindCSS
+ - (WebSockets)
 
-## Backend
+### Backend
+
+ - Golang
+ - Gorilla
+ - (WebSockets)
