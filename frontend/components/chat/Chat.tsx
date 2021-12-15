@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import Messageinput from "./Messageinput";
-
-interface Message {
-  msg: string;
-  author: string;
-  color: string;
-}
+import MessageType from "../../models/Message";
 
 export default function Chat({
   messages,
   self,
 }: {
-  messages: Array<Message>;
+  messages: Array<MessageType>;
   self: string;
 }) {
   const [chat, setChat] = useState([]);
@@ -22,7 +17,7 @@ export default function Chat({
     setChat(messages);
   }, []);
 
-  function addMessage(msg: Message) {
+  function addMessage(msg: MessageType) {
     // @ts-ignore
     setChat((prev) => [...prev, msg]);
     updateScroll();
@@ -41,13 +36,8 @@ export default function Chat({
       style={{ maxHeight: "590px" }}
     >
       <div className="overflow-y-auto h-full">
-        {chat.map((e: Message) => (
-          <Message
-            key={e.msg}
-            content={e.msg}
-            author={e.author}
-            color={e.color}
-          />
+        {chat.map((e: MessageType) => (
+          <Message key={e.msg} message={e} />
         ))}
         {/* @ts-ignore */}
         <div style={{ float: "left", clear: "both" }} ref={chatend}></div>
