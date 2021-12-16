@@ -76,7 +76,7 @@ export default function Home() {
     let c = JSON.parse(getCanvas());
     let d = JSON.parse(data);
     c.lines.push(d);
-    loadCanvas(JSON.stringify(c), true);
+    loadCanvas(JSON.stringify(c), false);
   }
 
   function getCanvas(): string {
@@ -84,7 +84,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const socket = new WebSocket("ws://192.168.178.128:8080/ws");
+    const socket = new WebSocket("ws://localhost:8080/ws");
 
     function handleCanvas() {
       let data = JSON.stringify(getReducedCanvas());

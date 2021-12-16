@@ -65,6 +65,7 @@ export default forwardRef(function CanvasUI(
               brushRadius={activeSize}
               canvasWidth={700}
               canvasHeight={550}
+              loadTimeOffset={20}
             />
           </div>
           <div className="flex mt-2 justify-between">
