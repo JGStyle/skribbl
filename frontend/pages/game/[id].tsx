@@ -66,9 +66,40 @@ export default function Home() {
     canvas.current!.loadCanvas(data, immediate);
   }
 
-  function getCanvas(): String {
+  function getReducedCanvas() {
+    let data = JSON.parse(getCanvas());
+    // @ts-ignore
+    return data.lines[data.lines.length - 1];
+  }
+
+  function appendCanvasState(data: string) {
+    let c = JSON.parse(getCanvas());
+    let d = JSON.parse(data);
+    c.lines.push(d);
+    loadCanvas(JSON.stringify(c), true);
+  }
+
+  function getCanvas(): string {
     return canvas.current!.getCanvas();
   }
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://192.168.178.128:8080/ws");
+
+    function handleCanvas() {
+      let data = JSON.stringify(getReducedCanvas());
+      socket.send(data);
+    }
+
+    addEventListener("mouseup", handleCanvas);
+    addEventListener("touchend", handleCanvas);
+
+    socket.onmessage = (event) => {
+      const { data } = event;
+      appendCanvasState(data);
+    };
+  }, []);
+
   return (
     <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
       <div className="flex flex-col">
