@@ -91,7 +91,6 @@ export default function Home() {
           <CanvasUI disabled={disableCanvas} word={activeWord} ref={canvas} />
           <div className="ml-4">
             <Chat
-              self="JGStyle"
               messages={[
                 {
                   msg: "test message",

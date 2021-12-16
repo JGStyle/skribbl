@@ -25,7 +25,6 @@ export default function Lobby() {
         <Config admin={admin} />
         <Chat
           messages={[{ msg: "message", author: "user", color: "#FF0010" }]}
-          self="jgs"
         />
       </div>
     </div>
