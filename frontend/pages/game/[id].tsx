@@ -103,7 +103,7 @@ export default function Home() {
           />
         )}
         <button
-          onClick={() => console.log(startTimer(10))}
+          onClick={() => console.log(getCanvas())}
           className="text-blue-400"
         >
           event
