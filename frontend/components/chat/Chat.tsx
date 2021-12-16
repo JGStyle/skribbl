@@ -23,11 +23,10 @@ export default function Chat({
     updateScroll();
   }
 
-  const chatend = useRef();
+  const chatend = useRef<HTMLDivElement>(null);
 
   function updateScroll() {
-    // @ts-ignore
-    chatend.current.scrollIntoView({ behavior: "smooth" });
+    chatend.current!.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
