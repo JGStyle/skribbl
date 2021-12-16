@@ -15,7 +15,7 @@ export default function Chat({
   useEffect(() => {
     // @ts-ignore
     setChat(messages);
-  }, []);
+  }, [messages]);
 
   function addMessage(msg: MessageType) {
     // @ts-ignore
