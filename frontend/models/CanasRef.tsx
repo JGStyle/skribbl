@@ -1,5 +1,5 @@
 export default interface CanvasRef {
-  getCanvas: () => String;
-  loadCanvas: (data: String, immediate: Boolean) => void;
+  getCanvas: () => string;
+  loadCanvas: (data: string, immediate: boolean) => void;
   resetCanvas: () => void;
 }

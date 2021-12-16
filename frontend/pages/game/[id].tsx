@@ -18,10 +18,10 @@ export default function Home() {
   const [players, setPlayers] = useState([
     {
       name: "player a",
-      id: "3asd",
+      id: 6,
       score: 100,
       wins: 4,
-      status: "status",
+      status: "active",
       guessed: false,
       color: "#FFFFFF",
       profile: "abc",
@@ -29,20 +29,13 @@ export default function Home() {
   ]);
   const canvas = useRef<CanvasRef>(null);
 
-  useEffect(() => {
-    console.log(players);
-  }, [players]);
-
   function addPlayer(player: Player) {
-    // @ts-ignore
     setPlayers((prev) => [...prev, player]);
   }
 
-  function removePlayer(id: String) {
-    // @ts-ignore
+  function removePlayer(id: number) {
     let cp = players.slice();
     for (let i = 0; i < cp.length; i++) {
-      // @ts-ignore
       console.log(cp[i].id);
       if (cp[i].id == id) {
         cp.splice(i, 1);
@@ -69,7 +62,7 @@ export default function Home() {
     canvas.current!.resetCanvas();
   }
 
-  function loadCanvas(data: String, immediate: Boolean) {
+  function loadCanvas(data: string, immediate: boolean) {
     canvas.current!.loadCanvas(data, immediate);
   }
 
@@ -109,7 +102,12 @@ export default function Home() {
             }}
           />
         )}
-        <button onClick={() => removePlayer("3asd")}>Click me</button>
+        <button
+          onClick={() => console.log(startTimer(10))}
+          className="text-blue-400"
+        >
+          event
+        </button>
       </div>
     </div>
   );

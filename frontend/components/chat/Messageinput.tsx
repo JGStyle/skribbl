@@ -11,8 +11,7 @@ export default function Messageinput({
   const [message, _setMessage] = useState("");
   const msgRef = useRef(message);
 
-  // @ts-ignore
-  const setMessage = (data) => {
+  const setMessage = (data: string) => {
     msgRef.current = data;
     _setMessage(data);
   };

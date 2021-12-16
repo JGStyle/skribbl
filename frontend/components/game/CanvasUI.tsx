@@ -34,11 +34,11 @@ export default forwardRef(function CanvasUI(
     }
   }
 
-  function getCanvas(): String {
+  function getCanvas(): string {
     return canvas.current.getSaveData();
   }
 
-  function loadCanvas(data: String, immediate: Boolean): void {
+  function loadCanvas(data: string, immediate: boolean): void {
     canvas.current.loadSaveData(data, immediate);
   }
 

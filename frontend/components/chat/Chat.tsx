@@ -3,22 +3,14 @@ import Message from "./Message";
 import Messageinput from "./Messageinput";
 import MessageType from "../../models/Message";
 
-export default function Chat({
-  messages,
-  self,
-}: {
-  messages: Array<MessageType>;
-  self: string;
-}) {
-  const [chat, setChat] = useState([]);
+export default function Chat({ messages }: { messages: MessageType[] }) {
+  const [chat, setChat] = useState<MessageType[]>([]);
 
   useEffect(() => {
-    // @ts-ignore
     setChat(messages);
   }, [messages]);
 
   function addMessage(msg: MessageType) {
-    // @ts-ignore
     setChat((prev) => [...prev, msg]);
     updateScroll();
   }
@@ -38,7 +30,6 @@ export default function Chat({
         {chat.map((e: MessageType) => (
           <Message key={e.msg} message={e} />
         ))}
-        {/* @ts-ignore */}
         <div style={{ float: "left", clear: "both" }} ref={chatend}></div>
       </div>
       <Messageinput

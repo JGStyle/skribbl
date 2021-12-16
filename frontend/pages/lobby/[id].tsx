@@ -14,7 +14,7 @@ export default function Lobby() {
               score: 0,
               wins: 0,
               status: "host",
-              id: "1",
+              id: 1,
               guessed: false,
               color: "#ffffff",
               profile: "abc",
