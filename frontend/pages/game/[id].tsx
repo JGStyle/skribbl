@@ -37,7 +37,6 @@ export default function Home() {
   function removePlayer(id: number) {
     let cp = players.slice();
     for (let i = 0; i < cp.length; i++) {
-      console.log(cp[i].id);
       if (cp[i].id == id) {
         cp.splice(i, 1);
         break;
@@ -80,41 +79,7 @@ export default function Home() {
     let buffer = new ArrayBuffer(amount);
     let view = new Uint16Array(buffer);
 
-    let base = 0;
-    switch (data.brushColor) {
-      case "#fff":
-        break;
-      case "#000000":
-        base = 5;
-        break;
-      case "#6B7280":
-        base = 10;
-        break;
-      case "#EF4444":
-        base = 15;
-        break;
-      case "#F59E0B":
-        base = 20;
-        break;
-      case "#10B981":
-        base = 25;
-        break;
-      case "#3B82F6":
-        base = 30;
-        break;
-      case "#6366F1":
-        base = 35;
-        break;
-      case "#8B5CF6":
-        base = 40;
-        break;
-      case "#EC4899":
-        base = 45;
-        break;
-      default:
-        base = 5;
-    }
-
+    let base = colors.indexOf(data.brushColor) * 5;
     base += data.brushRadius / 3 - 1;
 
     view[0] = base;
