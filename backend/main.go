@@ -33,7 +33,7 @@ func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 
 func ListenForEvents(socket *websocket.Conn, channel chan []byte) {
 	for message := range channel {
-		socket.WriteMessage(websocket.TextMessage, message)
+		socket.WriteMessage(websocket.BinaryMessage, message)
 	}
 }
 
