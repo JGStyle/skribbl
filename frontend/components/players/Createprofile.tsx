@@ -72,6 +72,7 @@ export default function Createprofile() {
           placeholder="username"
           change={updateUsername}
           value={username}
+          onEnter={() => {}}
         />
         <div className="mt-6">
           <div className="flex gap-x-2">
