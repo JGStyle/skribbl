@@ -19,6 +19,7 @@ var mutex = sync.Mutex{}
 var clients = []chan []byte{}
 
 func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	defer mutex.Unlock()
 	mutex.Lock()
 	conn, err := upgrader.Upgrade(w, r, nil)
