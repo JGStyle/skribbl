@@ -158,7 +158,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const ws = new WebSocket("wss://skribb.heroku.com/ws");
+    const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
     setSocket(ws);
 
     function handleCanvas(event: any) {
@@ -166,6 +166,7 @@ export default function Home() {
       if (data !== lastCanvas) {
         ws.send(getBitArrayBuffer(data));
       }
+      setLastCanvas(data);
     }
 
     addEventListener("mouseup", handleCanvas);
