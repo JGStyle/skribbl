@@ -124,7 +124,7 @@ export default function Home() {
   function appendCanvasState(d: {}) {
     let c = JSON.parse(getCanvas());
     c.lines.push(d);
-    loadCanvas(JSON.stringify(c), false);
+    loadCanvas(JSON.stringify(c), true);
   }
 
   function getCanvas(): string {
@@ -132,7 +132,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080/ws");
+    const socket = new WebSocket("ws://skribb.herkouapp.com:8080/ws");
 
     function handleCanvas() {
       socket.send(getBitArrayBuffer());
