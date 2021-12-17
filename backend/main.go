@@ -14,9 +14,14 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
+type Event struct {
+	EventType int
+	Payload []byte
+}
+
 
 var mutex = sync.Mutex{}
-var clients = []chan []byte{}
+var clients = []chan Event{}
 
 func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -28,21 +33,21 @@ func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		return
 	}
-	channel := make(chan []byte)
+	channel := make(chan Event)
 	clients = append(clients, channel)
 	go ListenForEvents(conn, channel)
 	go SendDrawEvents(conn, channel)
 }
 
-func ListenForEvents(socket *websocket.Conn, channel chan []byte) {
+func ListenForEvents(socket *websocket.Conn, channel chan Event) {
 	for message := range channel {
-		socket.WriteMessage(websocket.BinaryMessage, message)
+		socket.WriteMessage(message.EventType, message.Payload)
 	}
 }
 
-func SendDrawEvents(socket *websocket.Conn, channel chan []byte) {
+func SendDrawEvents(socket *websocket.Conn, channel chan Event) {
 	for {
-		_, message, err := socket.ReadMessage()
+		messageType, message, err := socket.ReadMessage()
 		if err != nil {
 			mutex.Lock()
 			close(channel)
@@ -57,7 +62,7 @@ func SendDrawEvents(socket *websocket.Conn, channel chan []byte) {
 		mutex.Lock()
 		for _, client := range clients {
 			if client != channel {
-				client <- message
+				client <- Event{ EventType: messageType, Payload: message }
 			}
 		}
 		mutex.Unlock()

@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import CanvasRef from "../../models/CanasRef";
 import Player from "../../models/Player";
 import colors from "../../components/default/Colors";
+import MessageType from "../../models/Message";
 
 export default function Home() {
   const [time, setTime] = useState(30);
@@ -16,6 +17,7 @@ export default function Home() {
   const [disableCanvas, setDisableCanvas] = useState(false);
   const [activeWord, setActiveWord] = useState("activeword");
   const [selectWords, setSelectWord] = useState([]); //["hamburger", "apple", "ball"]
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [players, setPlayers] = useState([
     {
       name: "player a",
@@ -29,6 +31,8 @@ export default function Home() {
     },
   ]);
   const canvas = useRef<CanvasRef>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [lastCanvas, setLastCanvas] = useState("");
 
   function addPlayer(player: Player) {
     setPlayers((prev) => [...prev, player]);
@@ -72,8 +76,11 @@ export default function Home() {
     return data.lines[data.lines.length - 1];
   }
 
-  function getBitArrayBuffer(): Uint16Array {
-    let data = getReducedCanvas();
+  function getBitArrayBuffer(data: {
+    points: [{ x: number; y: number }];
+    brushColor: string;
+    brushRadius: number;
+  }): Uint16Array {
     let amount = (data.points.length * 2 + 1) * 2;
 
     let buffer = new ArrayBuffer(amount);
@@ -131,18 +138,45 @@ export default function Home() {
     return canvas.current!.getCanvas();
   }
 
-  useEffect(() => {
-    const socket = new WebSocket("wss://skribb.herokuapp.com/ws");
+  function addMessage(m: MessageType) {
+    setMessages((prev) => [...prev, m]);
+  }
 
-    function handleCanvas() {
-      socket.send(getBitArrayBuffer());
+  function sendMessage(m: string) {
+    addMessage({
+      msg: m,
+      author: "you",
+      color: "#f2a05a",
+    });
+    socket?.send(
+      JSON.stringify({
+        event: "chat:msg",
+        payload: { msg: m, author: "user", color: "#4bc20f" },
+        author: "user",
+      })
+    );
+  }
+
+  useEffect(() => {
+    const ws = new WebSocket("wss://skribb.heroku.com/ws");
+    setSocket(ws);
+
+    function handleCanvas(event: any) {
+      let data = getReducedCanvas();
+      if (data !== lastCanvas) {
+        ws.send(getBitArrayBuffer(data));
+      }
     }
 
     addEventListener("mouseup", handleCanvas);
     addEventListener("touchend", handleCanvas);
 
-    socket.onmessage = ({ data }) => {
-      interpretByteBlob(data);
+    ws.onmessage = ({ data }) => {
+      if (typeof data === "string") {
+        addMessage(JSON.parse(data).payload);
+      } else {
+        interpretByteBlob(data);
+      }
     };
   }, []);
 
@@ -160,15 +194,7 @@ export default function Home() {
           </div>
           <CanvasUI disabled={disableCanvas} word={activeWord} ref={canvas} />
           <div className="ml-4">
-            <Chat
-              messages={[
-                {
-                  msg: "test message",
-                  author: "Player",
-                  color: "#000000",
-                },
-              ]}
-            />
+            <Chat sendMsg={sendMessage} messages={messages} />
           </div>
         </div>
         {selectWords.length > 0 && (
