@@ -119,6 +119,7 @@ export default function Config({ admin }: { admin: boolean }) {
             placeholder="ferrari, porsche, tesla"
             change={updateCustomwords}
             value={customwords}
+            onEnter={() => {}}
           />
         </div>
         <Btn type={t.Success} content="&rarr; start game" click={startgame} />
