@@ -6,6 +6,7 @@ import Wordpicker from "../../components/game/Wordpicker";
 import { useEffect, useRef, useState } from "react";
 import CanvasRef from "../../models/CanasRef";
 import Player from "../../models/Player";
+import colors from "../../components/default/Colors";
 
 export default function Home() {
   const [time, setTime] = useState(30);
@@ -72,9 +73,91 @@ export default function Home() {
     return data.lines[data.lines.length - 1];
   }
 
-  function appendCanvasState(data: string) {
+  function getBitArrayBuffer(): Uint16Array {
+    let data = getReducedCanvas();
+    let amount = (data.points.length * 2 + 1) * 2;
+
+    let buffer = new ArrayBuffer(amount);
+    let view = new Uint16Array(buffer);
+
+    let base = 0;
+    switch (data.brushColor) {
+      case "#fff":
+        break;
+      case "#000000":
+        base = 5;
+        break;
+      case "#6B7280":
+        base = 10;
+        break;
+      case "#EF4444":
+        base = 15;
+        break;
+      case "#F59E0B":
+        base = 20;
+        break;
+      case "#10B981":
+        base = 25;
+        break;
+      case "#3B82F6":
+        base = 30;
+        break;
+      case "#6366F1":
+        base = 35;
+        break;
+      case "#8B5CF6":
+        base = 40;
+        break;
+      case "#EC4899":
+        base = 45;
+        break;
+      default:
+        base = 5;
+    }
+
+    base += data.brushRadius / 3 - 1;
+
+    view[0] = base;
+    for (let i = 1; i < view.length; i++) {
+      let n = data.points[Math.floor((i - 1) / 2)];
+      let j = 0;
+      if (i % 2 == 1) {
+        j = Math.floor(n.x);
+      } else {
+        j = Math.floor(n.y);
+      }
+      view[i] = j;
+    }
+    return view;
+  }
+
+  function interpretByteBlob(blob: Blob) {
+    // convert blob to uint16Array
+    let arrayBuffer;
+    let fileReader = new FileReader();
+    fileReader.onload = (event) => {
+      // @ts-ignore
+      reconstructJSONFromUint16Array(new Uint16Array(event.target.result));
+    };
+    fileReader.readAsArrayBuffer(blob);
+  }
+
+  function reconstructJSONFromUint16Array(a: Uint16Array) {
+    let brushandcolor = a[0];
+    let json = { brushColor: "", brushRadius: 0, points: [] };
+    json.brushColor = colors[Math.floor(brushandcolor / 5)];
+    json.brushRadius = ((brushandcolor % 5) + 1) * 3;
+    let i = 0;
+    // @ts-ignore
+    for (let i = 1; i < a.length; i += 2) {
+      // @ts-ignore
+      json.points.push({ x: a[i], y: a[i + 1] });
+    }
+    appendCanvasState(json);
+  }
+
+  function appendCanvasState(d: {}) {
     let c = JSON.parse(getCanvas());
-    let d = JSON.parse(data);
     c.lines.push(d);
     loadCanvas(JSON.stringify(c), false);
   }
@@ -87,16 +170,14 @@ export default function Home() {
     const socket = new WebSocket("ws://localhost:8080/ws");
 
     function handleCanvas() {
-      let data = JSON.stringify(getReducedCanvas());
-      socket.send(data);
+      socket.send(getBitArrayBuffer());
     }
 
     addEventListener("mouseup", handleCanvas);
     addEventListener("touchend", handleCanvas);
 
-    socket.onmessage = (event) => {
-      const { data } = event;
-      appendCanvasState(data);
+    socket.onmessage = ({ data }) => {
+      interpretByteBlob(data);
     };
   }, []);
 
