@@ -40,6 +40,7 @@ export default function Config({ admin }: { admin: boolean }) {
             placeholder="123theavengers"
             change={updateRoomname}
             value={roomname}
+            onEnter={() => {}}
           />
         </div>
         <div>
