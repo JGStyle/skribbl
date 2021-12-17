@@ -132,7 +132,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const socket = new WebSocket("ws://skribb.herkouapp.com:8080/ws");
+    const socket = new WebSocket("wss://skribb.herkouapp.com/ws");
 
     function handleCanvas() {
       socket.send(getBitArrayBuffer());
