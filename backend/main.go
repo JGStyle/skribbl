@@ -23,6 +23,7 @@ func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 	mutex.Lock()
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
+		log.Printf("Error while upgrading connection: %s\n", err.Error())
 		w.WriteHeader(400)
 		return
 	}
