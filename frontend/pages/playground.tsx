@@ -41,6 +41,7 @@ export default function Playground() {
           change={updateInput}
           placeholder="input json"
           value={input}
+          onEnter={() => {}}
         ></Input>
       </div>
       <button
