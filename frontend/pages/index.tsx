@@ -32,6 +32,13 @@ export default function Home() {
         >
           Josef Schmid
         </a>
+        and
+        <a
+          href="https://github.com/smorrin28"
+          className="ml-1 mr-1 text-blue-500 hover:underline"
+        >
+          Simon Morin
+        </a>
       </footer>
     </div>
   );
