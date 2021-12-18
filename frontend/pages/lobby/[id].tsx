@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { SocketContext } from "../../components/websockets/SocketContext";
 import Createprofile from "../../components/players/Createprofile";
 import { useRouter } from "next/router";
+import Footer from "../../components/default/Footer";
 
 export default function Lobby() {
   const [join, setJoin] = useState(true);
@@ -89,6 +90,7 @@ export default function Lobby() {
           />
           <Config admin={admin} />
           <Chat messages={messages} sendMsg={sendMessage} />
+          <Footer />
         </div>
       </div>
     );
