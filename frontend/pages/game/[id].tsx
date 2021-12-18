@@ -9,7 +9,7 @@ import Player from "../../models/Player";
 import colors from "../../components/default/Colors";
 import MessageType from "../../models/Message";
 
-export default function Home() {
+export default function Game() {
   const [time, setTime] = useState(30);
   const [activeRound, setActiveRound] = useState(1);
   const [maxRound, setMaxRound] = useState(5);
