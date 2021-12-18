@@ -4,6 +4,14 @@ import Sidebar from "../../components/players/Sidebar";
 import Topbar from "../../components/game/Topbar";
 import Wordpicker from "../../components/game/Wordpicker";
 import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
+import {
+  userListAtom,
+  messagesAtom,
+  socketAtom,
+  selfAtom,
+  canvasAtom,
+} from "../../atoms";
 import CanvasRef from "../../models/CanasRef";
 import Player from "../../models/Player";
 import colors from "../../components/default/Colors";
@@ -17,37 +25,21 @@ export default function Game() {
   const [disableCanvas, setDisableCanvas] = useState(false);
   const [activeWord, setActiveWord] = useState("activeword");
   const [selectWords, setSelectWord] = useState([]); //["hamburger", "apple", "ball"]
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [players, setPlayers] = useState([
-    {
-      name: "player a",
-      id: 6,
-      score: 100,
-      wins: 4,
-      status: "active",
-      guessed: false,
-      color: "#FFFFFF",
-      profile: "abc",
-    },
-  ]);
-  const canvas = useRef<CanvasRef>(null);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const canvasRef = useRef<CanvasRef>(null);
   const [lastCanvas, setLastCanvas] = useState("");
 
-  function addPlayer(player: Player) {
-    setPlayers((prev) => [...prev, player]);
-  }
+  const [socket, setSocket] = useRecoilState(socketAtom);
+  const [userList, setUserList] = useRecoilState(userListAtom);
+  const [messages, setMessages] = useRecoilState(messagesAtom);
+  const [self, setSelf] = useRecoilState(selfAtom);
+  const [canvas, setCanvas] = useRecoilState(canvasAtom);
 
-  function removePlayer(id: number) {
-    let cp = players.slice();
-    for (let i = 0; i < cp.length; i++) {
-      if (cp[i].id == id) {
-        cp.splice(i, 1);
-        break;
-      }
+  useEffect(() => {
+    if (Object.keys(canvas).length !== 0) {
+      console.log(canvas);
+      appendCanvasState(canvas);
     }
-    setPlayers(cp);
-  }
+  }, [canvas]);
 
   function startTimer(seconds: number) {
     let timer = seconds;
@@ -63,11 +55,11 @@ export default function Game() {
   }
 
   function clearCanvas() {
-    canvas.current!.resetCanvas();
+    canvasRef.current!.resetCanvas();
   }
 
   function loadCanvas(data: string, immediate: boolean) {
-    canvas.current!.loadCanvas(data, immediate);
+    canvasRef.current!.loadCanvas(data, immediate);
   }
 
   function getReducedCanvas() {
@@ -103,31 +95,6 @@ export default function Game() {
     return view;
   }
 
-  function interpretByteBlob(blob: Blob) {
-    // convert blob to uint16Array
-    let arrayBuffer;
-    let fileReader = new FileReader();
-    fileReader.onload = (event) => {
-      // @ts-ignore
-      reconstructJSONFromUint16Array(new Uint16Array(event.target.result));
-    };
-    fileReader.readAsArrayBuffer(blob);
-  }
-
-  function reconstructJSONFromUint16Array(a: Uint16Array) {
-    let brushandcolor = a[0];
-    let json = { brushColor: "", brushRadius: 0, points: [] };
-    json.brushColor = colors[Math.floor(brushandcolor / 5)];
-    json.brushRadius = ((brushandcolor % 5) + 1) * 3;
-    let i = 0;
-    // @ts-ignore
-    for (let i = 1; i < a.length; i += 2) {
-      // @ts-ignore
-      json.points.push({ x: a[i], y: a[i + 1] });
-    }
-    appendCanvasState(json);
-  }
-
   function appendCanvasState(d: {}) {
     let c = JSON.parse(getCanvas());
     c.lines.push(d);
@@ -135,19 +102,18 @@ export default function Game() {
   }
 
   function getCanvas(): string {
-    return canvas.current!.getCanvas();
-  }
-
-  function addMessage(m: MessageType) {
-    setMessages((prev) => [...prev, m]);
+    return canvasRef.current!.getCanvas();
   }
 
   function sendMessage(m: string) {
-    addMessage({
-      msg: m,
-      author: "you",
-      color: "#f2a05a",
-    });
+    setMessages([
+      ...messages,
+      {
+        msg: m,
+        author: "you",
+        color: "#f2a05a",
+      },
+    ]);
     socket?.send(
       JSON.stringify({
         event: "chat:msg",
@@ -158,7 +124,8 @@ export default function Game() {
   }
 
   useEffect(() => {
-    const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
+    // const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
+    const ws = new WebSocket("ws://localhost:8080/ws");
     setSocket(ws);
 
     function handleCanvas(event: any) {
@@ -171,14 +138,6 @@ export default function Game() {
 
     addEventListener("mouseup", handleCanvas);
     addEventListener("touchend", handleCanvas);
-
-    ws.onmessage = ({ data }) => {
-      if (typeof data === "string") {
-        addMessage(JSON.parse(data).payload);
-      } else {
-        interpretByteBlob(data);
-      }
-    };
   }, []);
 
   return (
@@ -191,9 +150,13 @@ export default function Game() {
         />
         <div className="flex justify-center">
           <div className="mr-4 lg:block hidden">
-            <Sidebar players={players} admin={true} />
+            <Sidebar players={userList} admin={true} />
           </div>
-          <CanvasUI disabled={disableCanvas} word={activeWord} ref={canvas} />
+          <CanvasUI
+            disabled={disableCanvas}
+            word={activeWord}
+            ref={canvasRef}
+          />
           <div className="ml-4">
             <Chat sendMsg={sendMessage} messages={messages} />
           </div>

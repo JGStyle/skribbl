@@ -8,6 +8,7 @@ import Head from "next/head";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
+      {/* SocketHandler */}
       <Head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#374151" />
