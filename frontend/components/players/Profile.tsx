@@ -7,7 +7,7 @@ export default function Profile({
   player: Player;
   admin: boolean;
 }) {
-  const { name, score, wins, status, guessed } = player;
+  const { name, score, wins, status, guessed, color } = player;
   return (
     <div
       className={`${
@@ -17,7 +17,10 @@ export default function Profile({
       } flex w-full group items-center rounded-3xl h-16 py-2 px-4 mb-3 hover:h-32 transition-all`}
     >
       <div>
-        <div className="h-10 w-10 group-hover:h-24 group-hover:w-24 transition-all bg-rose-600 mr-3 rounded-lg"></div>
+        <div
+          className="h-10 w-10 group-hover:h-24 group-hover:w-24 transition-all mr-3 rounded-lg"
+          style={{ backgroundColor: color }}
+        ></div>
       </div>
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>
@@ -41,7 +44,7 @@ export default function Profile({
             guessed ? "text-white" : "text-black"
           } font-semibold text-3xl`}
         >
-          {wins}
+          {score !== 0 && wins}
         </h3>
       </div>
     </div>

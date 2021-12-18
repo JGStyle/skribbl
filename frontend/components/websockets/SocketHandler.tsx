@@ -27,13 +27,13 @@ const SocketHandler: FC = ({ children }) => {
       socket.onmessage = (msg) => {
         if (typeof msg.data == "string") {
           const { data } = msg;
-          const message = JSON.parse(data);
-          switch (message.event) {
+          const event = JSON.parse(data);
+          switch (event.event) {
             case "lobby:join":
-              setUserList([...userList, message.payload]);
+              setUserList([...userList, event.payload]);
               break;
             case "chat:msg":
-              setMessages((prev) => [...prev, message.payload]);
+              setMessages((prev) => [...prev, event.payload]);
               break;
             case "chat:guess":
               // TODO

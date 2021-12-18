@@ -4,7 +4,11 @@ import Input from "../default/Input";
 import Btn from "../default/Btn";
 import { variation as t } from "../default/Btn";
 
-export default function Createprofile() {
+export default function Createprofile({
+  onJoin,
+}: {
+  onJoin: (event: string) => void;
+}) {
   const [username, setUsername] = useState("");
   function updateUsername(event: any) {
     let name = event.target.value;
@@ -32,11 +36,13 @@ export default function Createprofile() {
   const canvas = useRef<any>(null);
 
   function join() {
-    console.log(username, color, getData());
-  }
-
-  function getData() {
-    return canvas.current.getSaveData();
+    const profile = canvas.current.getSaveData();
+    const event = {
+      event: "lobby:join",
+      author: username,
+      payload: { color: color, profile: profile },
+    };
+    onJoin(JSON.stringify(event));
   }
 
   function reset() {
