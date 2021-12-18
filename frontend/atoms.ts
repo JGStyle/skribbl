@@ -12,11 +12,6 @@ export const messagesAtom = atom<Message[]>({
   default: [],
 });
 
-export const socketAtom = atom<WebSocket | null>({
-  key: "socket",
-  default: null,
-});
-
 export const selfAtom = atom<Player>({
   key: "self",
   default: {

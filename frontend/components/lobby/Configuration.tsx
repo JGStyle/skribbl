@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../default/Input";
 import Btn from "../default/Btn";
 import { variation as t } from "../default/Btn";
+import { useRouter } from "next/router";
 
 export default function Config({ admin }: { admin: boolean }) {
   const [gamemode, setGamemode] = useState({
@@ -23,8 +24,11 @@ export default function Config({ admin }: { admin: boolean }) {
     setCustomwords(event.target.value);
   }
 
+  const router = useRouter();
+
   function startgame() {
     console.log(gamemode, rounds, roomname, customwords);
+    router.push("/game/1");
   }
 
   if (admin) {

@@ -11,8 +11,10 @@ export default function Messageinput({
   const [message, setMessage] = useState("");
 
   function send(msg: string) {
-    sendMessage(msg);
-    setMessage("");
+    if (msg !== "") {
+      sendMessage(msg);
+      setMessage("");
+    }
   }
 
   function updateMessage(event: any) {

@@ -3,15 +3,10 @@ import Chat from "../../components/chat/Chat";
 import Sidebar from "../../components/players/Sidebar";
 import Topbar from "../../components/game/Topbar";
 import Wordpicker from "../../components/game/Wordpicker";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useRecoilState } from "recoil";
-import {
-  userListAtom,
-  messagesAtom,
-  socketAtom,
-  selfAtom,
-  canvasAtom,
-} from "../../atoms";
+import { userListAtom, messagesAtom, selfAtom, canvasAtom } from "../../atoms";
+import { SocketContext } from "../../components/websockets/SocketContext";
 import CanvasRef from "../../models/CanasRef";
 import Player from "../../models/Player";
 import colors from "../../components/default/Colors";
@@ -28,7 +23,7 @@ export default function Game() {
   const canvasRef = useRef<CanvasRef>(null);
   const [lastCanvas, setLastCanvas] = useState("");
 
-  const [socket, setSocket] = useRecoilState(socketAtom);
+  const { socket, setSocket } = useContext(SocketContext);
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [messages, setMessages] = useRecoilState(messagesAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
@@ -36,7 +31,6 @@ export default function Game() {
 
   useEffect(() => {
     if (Object.keys(canvas).length !== 0) {
-      console.log(canvas);
       appendCanvasState(canvas);
     }
   }, [canvas]);
@@ -124,14 +118,10 @@ export default function Game() {
   }
 
   useEffect(() => {
-    // const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
-    const ws = new WebSocket("ws://localhost:8080/ws");
-    setSocket(ws);
-
     function handleCanvas(event: any) {
       let data = getReducedCanvas();
       if (data !== lastCanvas) {
-        ws.send(getBitArrayBuffer(data));
+        socket?.send(getBitArrayBuffer(data));
       }
       setLastCanvas(data);
     }

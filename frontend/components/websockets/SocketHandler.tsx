@@ -1,12 +1,7 @@
 import { useRecoilState } from "recoil";
-import {
-  userListAtom,
-  messagesAtom,
-  socketAtom,
-  selfAtom,
-  canvasAtom,
-} from "../../atoms";
-import { FC, useEffect } from "react";
+import { userListAtom, messagesAtom, selfAtom, canvasAtom } from "../../atoms";
+import { SocketContext } from "./SocketContext";
+import { FC, useEffect, useContext } from "react";
 import colors from "../default/Colors";
 
 /**
@@ -19,18 +14,18 @@ import colors from "../default/Colors";
  */
 
 const SocketHandler: FC = ({ children }) => {
-  const [socket, setSocket] = useRecoilState(socketAtom);
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [messages, setMessages] = useRecoilState(messagesAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
   const [canvas, setCanvas] = useRecoilState(canvasAtom);
 
+  const { socket, setSocket } = useContext(SocketContext);
+
   useEffect(() => {
-    console.log("i am here");
     if (socket) {
       console.log(socket);
       socket.onmessage = (msg) => {
-        if (typeof msg == "string") {
+        if (typeof msg.data == "string") {
           const { data } = msg;
           const message = JSON.parse(data);
           switch (message.event) {
@@ -38,7 +33,7 @@ const SocketHandler: FC = ({ children }) => {
               setUserList([...userList, message.payload]);
               break;
             case "chat:msg":
-              setMessages([...messages, message.payload]);
+              setMessages((prev) => [...prev, message.payload]);
               break;
             case "chat:guess":
               // TODO
@@ -61,7 +56,6 @@ const SocketHandler: FC = ({ children }) => {
           }
         } else {
           // canvas
-          console.log("recieved event");
           let arrayBuffer;
           let fileReader = new FileReader();
           fileReader.onload = (event) => {
@@ -79,7 +73,7 @@ const SocketHandler: FC = ({ children }) => {
             setCanvas(json);
           };
           // @ts-ignore
-          fileReader.readAsArrayBuffer(msg as Blob);
+          fileReader.readAsArrayBuffer(msg.data);
         }
       };
     }

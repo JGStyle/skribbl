@@ -10,15 +10,12 @@ export default function Chat({
   messages: MessageType[];
   sendMsg: (m: string) => void;
 }) {
-  function sendMessage(m: string) {
-    sendMsg(m);
-    updateScroll();
-  }
-
-  const chatend = useRef<HTMLDivElement>(null);
+  useEffect(updateScroll, [messages]);
 
   function updateScroll() {
-    chatend.current!.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("shadow-chat-element")
+      ?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -27,14 +24,17 @@ export default function Chat({
       style={{ maxHeight: "590px" }}
     >
       <div className="overflow-y-auto h-full">
-        {messages.map((e: MessageType) => (
-          <Message key={e.msg} message={e} />
+        {messages.map((e: MessageType, index) => (
+          <Message
+            key={e.msg}
+            message={e}
+            id={index === messages.length - 1 ? "shadow-chat-element" : ""}
+          />
         ))}
-        <div style={{ float: "left", clear: "both" }} ref={chatend}></div>
       </div>
       <Messageinput
         sendMessage={(m) => {
-          sendMessage(m);
+          sendMsg(m);
         }}
       />
     </div>
