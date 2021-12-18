@@ -11,6 +11,7 @@ import CanvasRef from "../../models/CanasRef";
 import Player from "../../models/Player";
 import colors from "../../components/default/Colors";
 import MessageType from "../../models/Message";
+import Footer from "../../components/default/Footer";
 
 export default function Game() {
   const [time, setTime] = useState(30);
@@ -104,15 +105,15 @@ export default function Game() {
       ...messages,
       {
         msg: m,
-        author: "you",
-        color: "#f2a05a",
+        author: self.name,
+        color: self.color,
       },
     ]);
     socket?.send(
       JSON.stringify({
         event: "chat:msg",
-        payload: { msg: m, author: "user", color: "#4bc20f" },
-        author: "user",
+        payload: { msg: m, author: self.name, color: self.color },
+        author: self.id,
       })
     );
   }
@@ -159,12 +160,7 @@ export default function Game() {
             }}
           />
         )}
-        <button
-          onClick={() => console.log(getCanvas())}
-          className="text-blue-400"
-        >
-          event
-        </button>
+        <Footer />
       </div>
     </div>
   );
