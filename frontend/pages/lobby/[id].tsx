@@ -31,8 +31,8 @@ export default function Lobby() {
   }
 
   useEffect(() => {
-    // const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
-    const ws = new WebSocket("ws://localhost:8080/ws");
+    const ws = new WebSocket("wss://skribb.herokuapp.com/ws");
+    // const ws = new WebSocket("ws://localhost:8080/ws");
     setSocket(ws);
   }, []);
 
