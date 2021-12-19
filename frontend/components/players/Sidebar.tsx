@@ -1,5 +1,6 @@
 import Profile from "./Profile";
 import Player from "../../models/Player";
+import { useEffect } from "react";
 
 export default function Sidebar({
   players,
@@ -8,6 +9,9 @@ export default function Sidebar({
   players: Array<Player>;
   admin: boolean;
 }) {
+  useEffect(() => {
+    console.log(players);
+  }, [players]);
   return (
     <div
       className="flex flex-col bg-white bg-opacity-10 rounded-3xl p-4 max-w-sm"

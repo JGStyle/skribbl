@@ -10,6 +10,14 @@ export default function Messageinput({
 }) {
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (message.length == 1) {
+      // send typing event
+    } else if (message.length == 0) {
+      // send stop typing event
+    }
+  }, [message]);
+
   function send(msg: string) {
     if (msg !== "") {
       sendMessage(msg);
