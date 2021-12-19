@@ -43,6 +43,9 @@ const SocketHandler: FC = ({ children }) => {
               };
               setUserList((prev) => [...prev, player]);
               break;
+            case "lobby:initial":
+              console.log(event);
+              break;
             case "chat:msg":
               setMessages((prev) => [...prev, event.payload]);
               break;

@@ -41,11 +41,9 @@ export default function Createprofile({
   const canvas = useRef<any>(null);
 
   function join() {
-    const id = genId();
     const profile = getData();
     const event = {
       event: "lobby:join",
-      author: id,
       payload: { name: username, color: color, profile: profile },
     };
     onJoin(event);
@@ -60,13 +58,6 @@ export default function Createprofile({
     let c = document.getElementById("canvac").firstChild.firstChild.nextSibling;
     // @ts-ignore
     return c.toDataURL();
-  }
-
-  function genId(): number {
-    return parseInt(
-      new Date().getTime().toString() +
-        Math.floor(Math.random() * 1000).toString()
-    );
   }
 
   return (

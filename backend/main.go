@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/models"
 	"encoding/json"
 	"log"
 	"math/rand"
@@ -17,22 +18,11 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-type Event struct {
-	EventType int
-	Author int
-	Payload []byte
-}
-
-type EventJSON struct {
-	Event string `json:"event"`
-	Author int `json:"author"`
-	Room string `json:"room"`
-	Payload interface{} `json:"payload"`
-}
 
 
 var mutex = sync.Mutex{}
-var clients = []chan Event{}
+var clients = []chan models.Event{}
+var players = []models.Player{}
 
 func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -44,17 +34,17 @@ func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		return
 	}
-	channel := make(chan Event)
+	channel := make(chan models.Event)
 	clients = append(clients, channel)
 	userID := generateUID()
 	go ListenForEvents(conn, channel, userID)
-	go SendDrawEvents(conn, channel, userID)
+	go sendEvents(conn, channel, userID)
 }
 
-func ListenForEvents(socket *websocket.Conn, channel chan Event, userID int) {
+func ListenForEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 	for message := range channel {
-		if userID != message.Author {
-			socket.WriteMessage(message.EventType, message.Payload)
+		if userID != message.ExcludeUser {
+			socket.WriteMessage(message.EventType, message.DataBeingSent)
 		}
 	}
 }
@@ -64,7 +54,7 @@ func generateUID() int {
 	return int(rand.Int31n(100000))
 }
 
-func SendDrawEvents(socket *websocket.Conn, channel chan Event, userID int) {
+func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 	for {
 		messageType, message, err := socket.ReadMessage()
 		if err != nil {
@@ -75,16 +65,21 @@ func SendDrawEvents(socket *websocket.Conn, channel chan Event, userID int) {
 					clients = append(clients[:i], clients[i+1:]...)
 				}
 			}
+			for i, player := range players{
+				if player.Id == userID {
+					players = append(players[:i], players[i+1:]...)
+				}
+			}
 			mutex.Unlock()
 			return
 		}
 		mutex.Lock()
 			if messageType == websocket.BinaryMessage {
 				for _, client := range clients {
-					client <- Event{ EventType: messageType, Payload: message, Author: userID }
+					client <- models.Event{ EventType: messageType, DataBeingSent: message, ExcludeUser: userID }
 				}
 			} else {
-				event := EventJSON{}
+				event := models.EventJSON{}
 				err := json.Unmarshal(message, &event)
 				event.Author = userID
 				newMessage, _ := json.Marshal(event)
@@ -94,10 +89,19 @@ func SendDrawEvents(socket *websocket.Conn, channel chan Event, userID int) {
 				for _, client := range clients {
 					switch event.Event {
 					case "msg:chat":
-						client <- Event{ EventType: websocket.TextMessage, Payload: newMessage, Author: userID }
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
 					case "msg:guess":
 					case "msg:typing":
 					case "lobby:join":
+						p := models.Player{Id: userID, Points: 0, Score: 0, Name: event.Payload["name"].(string), Color: event.Payload["color"].(string), Profile: event.Payload["profile"].(string) }
+						players = append(players, p)
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID}
+
+						players_exp, _ := json.Marshal(players) 
+						log.Println(players_exp)
+						arr := map[string]interface{} {"players" : string(players_exp)}
+						individual, _ := json.Marshal(models.EventJSON{ Event: "lobby:initial", Payload: arr })
+						socket.WriteMessage(websocket.TextMessage, individual)
 					case "lobby:start":
 					case "game:turn":
 					case "game:turnout":

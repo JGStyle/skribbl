@@ -57,8 +57,8 @@ export default function Lobby() {
 
   useEffect(() => {
     const { id } = router.query;
-    let url = "wss://skribb.herokuapp.com/ws";
-    // let url = "ws://localhost:8080/ws";
+    // let url = "wss://skribb.herokuapp.com/ws";
+    let url = "ws://localhost:8080/ws";
     url += `?room=${id}`;
     const ws = new WebSocket(url);
     setSocket(ws);
