@@ -7,7 +7,7 @@ import { variation as t } from "../default/Btn";
 export default function Createprofile({
   onJoin,
 }: {
-  onJoin: (event: string) => void;
+  onJoin: (event: {}) => void;
 }) {
   const [username, setUsername] = useState("");
   function updateUsername(event: any) {
@@ -21,9 +21,14 @@ export default function Createprofile({
   const colors = [
     "#000000",
     "#EF4444",
+    "#972d1f",
     "#F59E0B",
+    "#755620",
+    "#afa515",
     "#10B981",
+    "#3dc744",
     "#3B82F6",
+    "#103c85",
     "#6366F1",
     "#8B5CF6",
     "#EC4899",
@@ -36,17 +41,32 @@ export default function Createprofile({
   const canvas = useRef<any>(null);
 
   function join() {
-    const profile = canvas.current.getSaveData();
+    const id = genId();
+    const profile = getData();
     const event = {
       event: "lobby:join",
-      author: username,
-      payload: { color: color, profile: profile },
+      author: id,
+      payload: { name: username, color: color, profile: profile },
     };
-    onJoin(JSON.stringify(event));
+    onJoin(event);
   }
 
   function reset() {
     canvas.current.clear();
+  }
+
+  function getData(): string {
+    // @ts-ignore
+    let c = document.getElementById("canvac").firstChild.firstChild.nextSibling;
+    // @ts-ignore
+    return c.toDataURL();
+  }
+
+  function genId(): number {
+    return parseInt(
+      new Date().getTime().toString() +
+        Math.floor(Math.random() * 1000).toString()
+    );
   }
 
   return (
@@ -55,6 +75,7 @@ export default function Createprofile({
         <div
           className="rounded-xl overflow-hidden"
           style={{ width: "200px", height: "200px" }}
+          id="canvac"
         >
           <CanvasDraw
             ref={canvas}

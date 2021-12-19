@@ -1,4 +1,6 @@
 import Player from "../../models/Player";
+import CanvasDraw from "react-canvas-draw";
+import { useEffect, useRef } from "react";
 
 export default function Profile({
   player,
@@ -7,7 +9,7 @@ export default function Profile({
   player: Player;
   admin: boolean;
 }) {
-  const { name, score, wins, status, guessed, color } = player;
+  const { name, score, wins, status, guessed, color, profile } = player;
   return (
     <div
       className={`${
@@ -19,8 +21,10 @@ export default function Profile({
       <div>
         <div
           className="h-10 w-10 group-hover:h-24 group-hover:w-24 transition-all mr-3 rounded-lg"
-          style={{ backgroundColor: color }}
-        ></div>
+          style={{ outline: `solid 4px ${color}` }}
+        >
+          <ProfileCanvas profile={profile} />
+        </div>
       </div>
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>
@@ -49,4 +53,9 @@ export default function Profile({
       </div>
     </div>
   );
+}
+
+function ProfileCanvas({ profile }: { profile: string }) {
+  useEffect(() => {}, []);
+  return <img src={profile} alt="profile" />;
 }

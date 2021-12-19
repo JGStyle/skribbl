@@ -36,19 +36,20 @@ export default function Lobby() {
     );
   }
 
-  function joinLobby(event: string): void {
-    socket?.send(event);
-    let { payload, author } = JSON.parse(event);
+  function joinLobby(event: {}): void {
+    // @ts-ignore
+    let { payload, author } = event;
     setSelf({
-      name: author,
+      name: payload.name,
       score: 0,
       wins: 0,
       status: "",
       guessed: false,
       color: payload.color,
       profile: payload.profile,
-      id: null,
+      id: author,
     });
+    socket?.send(JSON.stringify(event));
     setJoin(false);
   }
 
@@ -61,7 +62,7 @@ export default function Lobby() {
     setSocket(ws);
   }, []);
 
-  const admin = true;
+  const admin = false;
 
   if (join) {
     return (
