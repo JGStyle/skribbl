@@ -9,7 +9,7 @@ export default function Profile({
   player: Player;
   admin: boolean;
 }) {
-  const { name, score, wins, status, guessed, color, profile } = player;
+  const { name, score, wins, status, guessed, color, profile, typing } = player;
   return (
     <div
       className={`${
@@ -36,11 +36,7 @@ export default function Profile({
         )}
       </div>
       <div>
-        {status !== "" && (
-          <h4 className="rounded-full text-lg py-1 px-2 mr-3 bg-indigo-500 text-white">
-            {status}
-          </h4>
-        )}
+        <StatusIndicator typing={typing} status={status} />
       </div>
       <div>
         <h3
@@ -58,4 +54,45 @@ export default function Profile({
 function ProfileCanvas({ profile }: { profile: string }) {
   useEffect(() => {}, []);
   return <img src={profile} alt="profile" />;
+}
+
+function StatusIndicator({
+  typing,
+  status,
+}: {
+  typing: boolean;
+  status: string;
+}) {
+  if (typing) {
+    return (
+      <div style={{ transform: "translateY(2px)" }}>
+        <div className="rounded-full text-lg py-1 px-2 mr-3 h-8 bg-blueGray-600 text-white flex justify-center items-center">
+          <div className="bg-white rounded-full h-2 w-2 mr-1 animate-pulse"></div>
+          <div
+            className="bg-white rounded-full h-2 w-2 mr-1 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
+          <div className="bg-white rounded-full h-2 w-2 animate-pulse"></div>
+        </div>
+        <div
+          className="w-0 h-0 border-4 border-blueGray-600 transform"
+          style={{
+            borderRightColor: "transparent",
+            borderBottomColor: "transparent",
+            transform: "translateX(8px) translateY(-2px)",
+          }}
+        ></div>
+      </div>
+    );
+  } else {
+    if (status !== "") {
+      return (
+        <h4 className="rounded-full text-lg py-1 px-2 mr-3 bg-indigo-500 text-white">
+          {status}
+        </h4>
+      );
+    } else {
+      return <></>;
+    }
+  }
 }

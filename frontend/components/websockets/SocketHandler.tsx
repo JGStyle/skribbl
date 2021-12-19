@@ -38,6 +38,7 @@ const SocketHandler: FC = ({ children }) => {
                 score: 0,
                 wins: 0,
                 guessed: false,
+                typing: false,
                 status: "",
               };
               setUserList((prev) => [...prev, player]);

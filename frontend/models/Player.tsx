@@ -6,5 +6,6 @@ export default interface Player {
   guessed: boolean;
   color: string;
   profile: string;
+  typing: boolean;
   id: number | null;
 }

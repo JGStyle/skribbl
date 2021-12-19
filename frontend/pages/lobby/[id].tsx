@@ -48,6 +48,7 @@ export default function Lobby() {
       guessed: false,
       color: payload.color,
       profile: payload.profile,
+      typing: false,
       id: author,
     });
     socket?.send(JSON.stringify(event));
@@ -63,7 +64,7 @@ export default function Lobby() {
     setSocket(ws);
   }, []);
 
-  const admin = false;
+  const admin = true;
 
   if (join) {
     return (
@@ -85,6 +86,7 @@ export default function Lobby() {
                 id: self.id,
                 guessed: self.guessed,
                 color: self.color,
+                typing: self.typing,
                 profile: self.profile,
               },
               ...userList,
