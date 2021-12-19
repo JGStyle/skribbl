@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/players/Sidebar";
 import Chat from "../../components/chat/Chat";
 import Config from "../../components/lobby/Configuration";
-import { messagesAtom, selfAtom } from "../../atoms";
+import { messagesAtom, selfAtom, userListAtom } from "../../atoms";
 import { useRecoilState } from "recoil";
 import { useContext } from "react";
 import { SocketContext } from "../../components/websockets/SocketContext";
@@ -13,6 +13,7 @@ import Footer from "../../components/default/Footer";
 export default function Lobby() {
   const [join, setJoin] = useState(true);
   const [messages, setMessages] = useRecoilState(messagesAtom);
+  const [userList, setUserList] = useRecoilState(userListAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
   const router = useRouter();
 
@@ -55,8 +56,8 @@ export default function Lobby() {
 
   useEffect(() => {
     const { id } = router.query;
-    let url = "wss://skribb.herokuapp.com/ws";
-    // let url = "ws://localhost:8080/ws";
+    // let url = "wss://skribb.herokuapp.com/ws";
+    let url = "ws://localhost:8080/ws";
     url += `?room=${id}`;
     const ws = new WebSocket(url);
     setSocket(ws);
@@ -86,6 +87,7 @@ export default function Lobby() {
                 color: self.color,
                 profile: self.profile,
               },
+              ...userList,
             ]}
             admin={admin}
           />

@@ -30,7 +30,17 @@ const SocketHandler: FC = ({ children }) => {
           const event = JSON.parse(data);
           switch (event.event) {
             case "lobby:join":
-              setUserList([...userList, event.payload]);
+              let player = {
+                id: event.author,
+                name: event.payload.name,
+                color: event.payload.color,
+                profile: event.payload.profile,
+                score: 0,
+                wins: 0,
+                guessed: false,
+                status: "",
+              };
+              setUserList((prev) => [...prev, player]);
               break;
             case "chat:msg":
               setMessages((prev) => [...prev, event.payload]);
