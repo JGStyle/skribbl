@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -16,7 +19,15 @@ var upgrader = websocket.Upgrader{
 
 type Event struct {
 	EventType int
+	Author int
 	Payload []byte
+}
+
+type EventJSON struct {
+	Event string `json:"event"`
+	Author int `json:"author"`
+	Room string `json:"room"`
+	Payload interface{} `json:"payload"`
 }
 
 
@@ -35,17 +46,25 @@ func HandleWebsocketClient(w http.ResponseWriter, r *http.Request) {
 	}
 	channel := make(chan Event)
 	clients = append(clients, channel)
-	go ListenForEvents(conn, channel)
-	go SendDrawEvents(conn, channel)
+	userID := generateUID()
+	go ListenForEvents(conn, channel, userID)
+	go SendDrawEvents(conn, channel, userID)
 }
 
-func ListenForEvents(socket *websocket.Conn, channel chan Event) {
+func ListenForEvents(socket *websocket.Conn, channel chan Event, userID int) {
 	for message := range channel {
-		socket.WriteMessage(message.EventType, message.Payload)
+		if userID != message.Author {
+			socket.WriteMessage(message.EventType, message.Payload)
+		}
 	}
 }
 
-func SendDrawEvents(socket *websocket.Conn, channel chan Event) {
+func generateUID() int {
+	rand.Seed(time.Now().UnixNano())
+	return int(rand.Int31n(100000))
+}
+
+func SendDrawEvents(socket *websocket.Conn, channel chan Event, userID int) {
 	for {
 		messageType, message, err := socket.ReadMessage()
 		if err != nil {
@@ -60,11 +79,36 @@ func SendDrawEvents(socket *websocket.Conn, channel chan Event) {
 			return
 		}
 		mutex.Lock()
-		for _, client := range clients {
-			if client != channel {
-				client <- Event{ EventType: messageType, Payload: message }
+			if messageType == websocket.BinaryMessage {
+				for _, client := range clients {
+					client <- Event{ EventType: messageType, Payload: message, Author: userID }
+				}
+			} else {
+				event := EventJSON{}
+				err := json.Unmarshal(message, &event)
+				event.Author = userID
+				newMessage, _ := json.Marshal(event)
+				if err != nil {
+					continue
+				}
+				for _, client := range clients {
+					switch event.Event {
+					case "msg:chat":
+						client <- Event{ EventType: websocket.TextMessage, Payload: newMessage, Author: userID }
+					case "msg:guess":
+					case "msg:typing":
+					case "lobby:join":
+					case "lobby:start":
+					case "game:turn":
+					case "game:turnout":
+					case "game:over":
+					case "game:kick":
+					case "game:select":
+						
+					}
+				}
 			}
-		}
+		
 		mutex.Unlock()
 	}
 }
