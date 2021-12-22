@@ -3,6 +3,7 @@ import { userListAtom, messagesAtom, selfAtom, canvasAtom } from "../../atoms";
 import { SocketContext } from "./SocketContext";
 import { FC, useEffect, useContext } from "react";
 import colors from "../default/Colors";
+import Player from "../../models/Player";
 
 /**
  * {
@@ -23,7 +24,6 @@ const SocketHandler: FC = ({ children }) => {
 
   useEffect(() => {
     if (socket) {
-      console.log(socket);
       socket.onmessage = (msg) => {
         if (typeof msg.data == "string") {
           const { data } = msg;
@@ -44,9 +44,15 @@ const SocketHandler: FC = ({ children }) => {
               setUserList((prev) => [...prev, player]);
               break;
             case "lobby:initial":
-              console.log(event);
+              const players: Player[] = JSON.parse(event.payload.players);
+              const thomas = players.map((player) => ({
+                ...player,
+                status: "",
+              }));
+              setUserList(thomas);
               break;
             case "chat:msg":
+              console.log(event);
               setMessages((prev) => [...prev, event.payload]);
               break;
             case "chat:guess":
@@ -61,8 +67,10 @@ const SocketHandler: FC = ({ children }) => {
             case "game:turn":
               // TODO
               break;
-            case "game:kick":
-              // TODO
+            case "game:leave":
+              setUserList((prev) =>
+                prev.filter((user) => user.id !== event.payload.user_id)
+              );
               break;
             case "game:over":
               // TODO

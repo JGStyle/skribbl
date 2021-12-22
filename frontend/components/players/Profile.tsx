@@ -2,13 +2,7 @@ import Player from "../../models/Player";
 import CanvasDraw from "react-canvas-draw";
 import { useEffect, useRef } from "react";
 
-export default function Profile({
-  player,
-  admin,
-}: {
-  player: Player;
-  admin: boolean;
-}) {
+export default function Profile({ player }: { player: Player }) {
   const { name, score, wins, status, guessed, color, profile, typing } = player;
   return (
     <div
@@ -29,11 +23,6 @@ export default function Profile({
       <div className="w-full">
         <h3 className="font-semibold text-xl">{name}</h3>
         {score !== 0 && <h3 className="font-semibold">score: {score}</h3>}
-        {admin && (
-          <button className="hidden group-hover:inline-block bg-black rounded-lg text-white py-1 px-2 hover:bg-gray-800">
-            kick
-          </button>
-        )}
       </div>
       <div>
         <StatusIndicator typing={typing} status={status} />

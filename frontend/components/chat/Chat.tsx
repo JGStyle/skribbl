@@ -26,7 +26,7 @@ export default function Chat({
       <div className="overflow-y-auto h-full">
         {messages.map((e: MessageType, index) => (
           <Message
-            key={e.msg}
+            key={index}
             message={e}
             id={index === messages.length - 1 ? "shadow-chat-element" : ""}
           />

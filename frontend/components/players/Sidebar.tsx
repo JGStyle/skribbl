@@ -18,8 +18,8 @@ export default function Sidebar({
       style={{ maxHeight: "590px", height: "100%", width: "350px" }}
     >
       <div className="overflow-y-auto">
-        {players.map((e: Player) => (
-          <Profile key={e.id} player={e} admin={admin} />
+        {players.map((e: Player, i: number) => (
+          <Profile key={i} player={e} />
         ))}
       </div>
     </div>

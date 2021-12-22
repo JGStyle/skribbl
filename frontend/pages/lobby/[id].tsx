@@ -64,7 +64,7 @@ export default function Lobby() {
     setSocket(ws);
   }, []);
 
-  const admin = true;
+  const admin = false;
 
   if (join) {
     return (
@@ -76,23 +76,7 @@ export default function Lobby() {
     return (
       <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
         <div className="flex gap-x-2" style={{ height: "550px" }}>
-          <Sidebar
-            players={[
-              {
-                name: self.name,
-                score: self.score,
-                wins: self.wins,
-                status: self.status,
-                id: self.id,
-                guessed: self.guessed,
-                color: self.color,
-                typing: self.typing,
-                profile: self.profile,
-              },
-              ...userList,
-            ]}
-            admin={admin}
-          />
+          <Sidebar players={userList} admin={admin} />
           <Config admin={admin} />
           <Chat messages={messages} sendMsg={sendMessage} />
           <Footer />
