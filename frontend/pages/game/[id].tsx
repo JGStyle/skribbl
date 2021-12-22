@@ -49,6 +49,14 @@ export default function Game() {
     }, 1000);
   }
 
+  function sendTyping(t: boolean) {
+    let event = {
+      event: "chat:typing",
+      payload: { typing: t },
+    };
+    socket?.send(JSON.stringify(event));
+  }
+
   function clearCanvas() {
     canvasRef.current!.resetCanvas();
   }
@@ -149,7 +157,11 @@ export default function Game() {
             ref={canvasRef}
           />
           <div className="ml-4">
-            <Chat sendMsg={sendMessage} messages={messages} />
+            <Chat
+              sendMsg={sendMessage}
+              messages={messages}
+              sendTyping={sendTyping}
+            />
           </div>
         </div>
         {selectWords.length > 0 && (
