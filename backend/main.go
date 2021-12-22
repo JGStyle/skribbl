@@ -97,13 +97,15 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 					}
 				case "chat:guess":
 				case "chat:typing":
+					for _, client := range clients {
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
+					}
 				case "lobby:join":
 					p := models.Player{Id: userID, Points: 0, Score: 0, Name: event.Payload["name"].(string), Color: event.Payload["color"].(string), Profile: event.Payload["profile"].(string) }
 					players = append(players, p)
 					for _, client := range clients {
 						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
 					}
-
 					players_exp, _ := json.Marshal(players) 
 					arr := map[string]interface{} {"players" : string(players_exp)}
 					individual, _ := json.Marshal(models.EventJSON{ Event: "lobby:initial", Payload: arr })
