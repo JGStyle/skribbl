@@ -63,9 +63,13 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 			for i, client := range clients {
 				if client == channel {
 					clients = append(clients[:i], clients[i+1:]...)
+					continue // To make sure the client leaving doesn't recieve the leave event
 				}
+				data := models.EventJSON{ Event: "game:leave", Author: -1, Payload: map[string]interface{}{"user_id": userID}, Room: ""} 
+				payload, _ := json.Marshal(data)
+				client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: payload, ExcludeUser: -1}
 			}
-			for i, player := range players{
+			for i, player := range players {
 				if player.Id == userID {
 					players = append(players[:i], players[i+1:]...)
 				}
@@ -86,30 +90,30 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 				if err != nil {
 					continue
 				}
-				for _, client := range clients {
-					switch event.Event {
-					case "msg:chat":
+				switch event.Event {
+				case "chat:msg":
+					for _, client := range clients {
 						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
-					case "msg:guess":
-					case "msg:typing":
-					case "lobby:join":
-						p := models.Player{Id: userID, Points: 0, Score: 0, Name: event.Payload["name"].(string), Color: event.Payload["color"].(string), Profile: event.Payload["profile"].(string) }
-						players = append(players, p)
-						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID}
-
-						players_exp, _ := json.Marshal(players) 
-						log.Println(players_exp)
-						arr := map[string]interface{} {"players" : string(players_exp)}
-						individual, _ := json.Marshal(models.EventJSON{ Event: "lobby:initial", Payload: arr })
-						socket.WriteMessage(websocket.TextMessage, individual)
-					case "lobby:start":
-					case "game:turn":
-					case "game:turnout":
-					case "game:over":
-					case "game:kick":
-					case "game:select":
-						
 					}
+				case "chat:guess":
+				case "chat:typing":
+				case "lobby:join":
+					p := models.Player{Id: userID, Points: 0, Score: 0, Name: event.Payload["name"].(string), Color: event.Payload["color"].(string), Profile: event.Payload["profile"].(string) }
+					players = append(players, p)
+					for _, client := range clients {
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
+					}
+
+					players_exp, _ := json.Marshal(players) 
+					arr := map[string]interface{} {"players" : string(players_exp)}
+					individual, _ := json.Marshal(models.EventJSON{ Event: "lobby:initial", Payload: arr })
+					socket.WriteMessage(websocket.TextMessage, individual)
+				case "lobby:start":
+				case "game:turn":
+				case "game:turnout":
+				case "game:over":
+				case "game:select":
+					
 				}
 			}
 		

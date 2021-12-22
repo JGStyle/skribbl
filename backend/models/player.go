@@ -6,5 +6,5 @@ type Player struct {
 	Color string `json:"color"`
 	Profile string `json:"profile"`
 	Score int `json:"score"`
-	Points int `json:"points"`
+	Points int `json:"wins"`
 }
