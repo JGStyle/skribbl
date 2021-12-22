@@ -22,6 +22,7 @@ export const selfAtom = atom<Player>({
     guessed: false,
     color: "",
     profile: "",
+    typing: false,
     id: 0,
   },
 });
