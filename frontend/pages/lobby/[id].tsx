@@ -32,9 +32,16 @@ export default function Lobby() {
       JSON.stringify({
         event: "chat:msg",
         payload: { msg: m, author: self.name, color: self.color },
-        author: self.id,
       })
     );
+  }
+
+  function sendTyping(t: boolean) {
+    let event = {
+      event: "chat:typing",
+      payload: { typing: t },
+    };
+    socket?.send(JSON.stringify(event));
   }
 
   function joinLobby(event: {}): void {
@@ -78,7 +85,11 @@ export default function Lobby() {
         <div className="flex gap-x-2" style={{ height: "550px" }}>
           <Sidebar players={userList} admin={admin} />
           <Config admin={admin} />
-          <Chat messages={messages} sendMsg={sendMessage} />
+          <Chat
+            messages={messages}
+            sendMsg={sendMessage}
+            sendTyping={sendTyping}
+          />
           <Footer />
         </div>
       </div>

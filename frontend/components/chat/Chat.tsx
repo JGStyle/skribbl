@@ -6,9 +6,11 @@ import Message from "./Message";
 export default function Chat({
   messages,
   sendMsg,
+  sendTyping,
 }: {
   messages: MessageType[];
   sendMsg: (m: string) => void;
+  sendTyping: (t: boolean) => void;
 }) {
   useEffect(updateScroll, [messages]);
 
@@ -36,6 +38,7 @@ export default function Chat({
         sendMessage={(m) => {
           sendMsg(m);
         }}
+        sendTyping={sendTyping}
       />
     </div>
   );

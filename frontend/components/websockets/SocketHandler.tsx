@@ -58,6 +58,16 @@ const SocketHandler: FC = ({ children }) => {
             case "chat:guess":
               // TODO
               break;
+            case "chat:typing":
+              const { author }: { author: number } = event;
+              setUserList((prev) =>
+                prev.map((user) =>
+                  user.id === author
+                    ? { ...user, typing: event.payload.typing }
+                    : user
+                )
+              );
+              break;
             case "game:turnout":
               // TODO
               break;

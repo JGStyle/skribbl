@@ -5,16 +5,18 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Messageinput({
   sendMessage,
+  sendTyping,
 }: {
   sendMessage: (m: string) => void;
+  sendTyping: (t: boolean) => void;
 }) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (message.length == 1) {
-      // send typing event
+      sendTyping(true);
     } else if (message.length == 0) {
-      // send stop typing event
+      sendTyping(false);
     }
   }, [message]);
 
