@@ -1,29 +1,31 @@
-import CanvasUI from "../../components/game/CanvasUI";
-import Chat from "../../components/chat/Chat";
-import Sidebar from "../../components/players/Sidebar";
-import Topbar from "../../components/game/Topbar";
-import Wordpicker from "../../components/game/Wordpicker";
+import CanvasUI from "../components/game/CanvasUI";
+import Chat from "../components/chat/Chat";
+import Sidebar from "../components/players/Sidebar";
+import Topbar from "../components/game/Topbar";
+import Wordpicker from "../components/game/Wordpicker";
 import { useEffect, useRef, useState, useContext } from "react";
 import { useRecoilState } from "recoil";
-import { userListAtom, messagesAtom, selfAtom, canvasAtom } from "../../atoms";
-import { SocketContext } from "../../components/websockets/SocketContext";
-import CanvasRef from "../../models/CanasRef";
-import Player from "../../models/Player";
-import colors from "../../components/default/Colors";
-import MessageType from "../../models/Message";
-import Footer from "../../components/default/Footer";
+import {
+  userListAtom,
+  messagesAtom,
+  selfAtom,
+  canvasAtom,
+  gameAtom,
+} from "../atoms";
+import { SocketContext } from "../components/websockets/SocketContext";
+import CanvasRef from "../models/CanasRef";
+import colors from "../components/default/Colors";
+import Footer from "../components/default/Footer";
 
 export default function Game() {
   const [time, setTime] = useState(30);
   const [activeRound, setActiveRound] = useState(1);
-  const [maxRound, setMaxRound] = useState(5);
-  const [roomName, setRoomName] = useState("room name");
+  const [game, setGame] = useRecoilState(gameAtom);
   const [disableCanvas, setDisableCanvas] = useState(false);
   const [activeWord, setActiveWord] = useState("activeword");
-  const [selectWords, setSelectWord] = useState([]); //["hamburger", "apple", "ball"]
+  const [selectWords, setSelectWord] = useState([]);
   const canvasRef = useRef<CanvasRef>(null);
   const [lastCanvas, setLastCanvas] = useState("");
-
   const { socket, setSocket } = useContext(SocketContext);
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [messages, setMessages] = useRecoilState(messagesAtom);
@@ -143,13 +145,13 @@ export default function Game() {
     <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
       <div className="flex flex-col">
         <Topbar
-          roomname={roomName}
+          roomname={game.name}
           time={time}
-          round={`${activeRound}/${maxRound}`}
+          round={`${activeRound}/${game.rounds}`}
         />
         <div className="flex justify-center">
           <div className="mr-4 lg:block hidden">
-            <Sidebar players={userList} admin={true} />
+            <Sidebar players={userList} />
           </div>
           <CanvasUI
             disabled={disableCanvas}

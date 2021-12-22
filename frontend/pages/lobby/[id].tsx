@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/players/Sidebar";
 import Chat from "../../components/chat/Chat";
 import Config from "../../components/lobby/Configuration";
-import { messagesAtom, selfAtom, userListAtom } from "../../atoms";
+import { messagesAtom, selfAtom, userListAtom, gameAtom } from "../../atoms";
 import { useRecoilState } from "recoil";
 import { useContext } from "react";
 import { SocketContext } from "../../components/websockets/SocketContext";
@@ -15,9 +15,20 @@ export default function Lobby() {
   const [messages, setMessages] = useRecoilState(messagesAtom);
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
-  const router = useRouter();
-
+  const [game, setGame] = useRecoilState(gameAtom);
   const { socket, setSocket } = useContext(SocketContext);
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    if (game.rounds != -1) {
+      router.push("/game");
+    }
+  }, [game]);
+
+  function startGame(payload: {}) {
+    console.log(payload);
+  }
 
   function sendMessage(m: string) {
     setMessages([
@@ -63,15 +74,17 @@ export default function Lobby() {
   }
 
   useEffect(() => {
-    const { id } = router.query;
-    let url = "wss://skribb.herokuapp.com/ws";
-    // let url = "ws://localhost:8080/ws";
-    url += `?room=${id}`;
-    const ws = new WebSocket(url);
-    setSocket(ws);
-  }, []);
+    if (id !== undefined) {
+      let url = "wss://skribb.herokuapp.com/ws";
+      // let url = "ws://localhost:8080/ws";
+      console.log("ID-G" + id);
+      url += `?room=${id}`;
+      const ws = new WebSocket(url);
+      setSocket(ws);
+    }
+  }, [id]);
 
-  const admin = false;
+  const admin = true;
 
   if (join) {
     return (
@@ -83,8 +96,8 @@ export default function Lobby() {
     return (
       <div className="flex justify-center items-center min-h-screen min-w-screen bg-main">
         <div className="flex gap-x-2" style={{ height: "550px" }}>
-          <Sidebar players={userList} admin={admin} />
-          <Config admin={admin} />
+          <Sidebar players={userList} />
+          <Config admin={admin} start={startGame} />
           <Chat
             messages={messages}
             sendMsg={sendMessage}

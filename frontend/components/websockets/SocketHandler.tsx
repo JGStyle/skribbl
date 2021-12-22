@@ -1,24 +1,22 @@
 import { useRecoilState } from "recoil";
-import { userListAtom, messagesAtom, selfAtom, canvasAtom } from "../../atoms";
+import {
+  userListAtom,
+  messagesAtom,
+  selfAtom,
+  canvasAtom,
+  gameAtom,
+} from "../../atoms";
 import { SocketContext } from "./SocketContext";
 import { FC, useEffect, useContext } from "react";
 import colors from "../default/Colors";
 import Player from "../../models/Player";
-
-/**
- * {
- *  event: "o"
- *  payload:
- *  author: 0
- *  room: ""
- * }
- */
 
 const SocketHandler: FC = ({ children }) => {
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [messages, setMessages] = useRecoilState(messagesAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
   const [canvas, setCanvas] = useRecoilState(canvasAtom);
+  const [game, setGame] = useRecoilState(gameAtom);
 
   const { socket, setSocket } = useContext(SocketContext);
 
@@ -45,14 +43,22 @@ const SocketHandler: FC = ({ children }) => {
               break;
             case "lobby:initial":
               const players: Player[] = JSON.parse(event.payload.players);
-              const thomas = players.map((player) => ({
+              const newPlayers = players.map((player) => ({
                 ...player,
                 status: "",
               }));
-              setUserList(thomas);
+              setUserList(newPlayers);
+              break;
+            case "lobby:start":
+              const { name, rounds, active, timePerRound } = event.Payload;
+              setGame({
+                name: name,
+                rounds: rounds,
+                activeWord: active,
+                timePerRound: timePerRound,
+              });
               break;
             case "chat:msg":
-              console.log(event);
               setMessages((prev) => [...prev, event.payload]);
               break;
             case "chat:guess":
@@ -113,11 +119,5 @@ const SocketHandler: FC = ({ children }) => {
 
   return <>{children}</>;
 };
-
-function interpretByteBlob(blob: Blob) {
-  // convert blob to uint16Array
-}
-
-function reconstructJSONFromUint16Array(a: Uint16Array) {}
 
 export default SocketHandler;

@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "../default/Input";
 import Btn from "../default/Btn";
 import { variation as t } from "../default/Btn";
-import { useRouter } from "next/router";
 
-export default function Config({ admin }: { admin: boolean }) {
+export default function Config({
+  admin,
+  start,
+}: {
+  admin: boolean;
+  start: (payload: {}) => void;
+}) {
   const [gamemode, setGamemode] = useState({
     s: false,
     n: true,
     r: false,
   });
-  const [rounds, setRounds] = useState({
+  const [_rounds, setRounds] = useState({
     s: false,
     n: true,
     l: false,
@@ -24,11 +29,24 @@ export default function Config({ admin }: { admin: boolean }) {
     setCustomwords(event.target.value);
   }
 
-  const router = useRouter();
-
-  function startgame() {
-    console.log(gamemode, rounds, roomname, customwords);
-    router.push("/game/1");
+  function startGame() {
+    let rounds = 0;
+    let timePerRound = 0;
+    if (gamemode.s) {
+      timePerRound = 40;
+    } else if (gamemode.n) {
+      timePerRound = 80;
+    } else {
+      timePerRound = 120;
+    }
+    if (_rounds.s) {
+      rounds = 3;
+    } else if (_rounds.n) {
+      rounds = 6;
+    } else {
+      rounds = 9;
+    }
+    start({ rounds, roomname, timePerRound, customwords });
   }
 
   if (admin) {
@@ -52,7 +70,7 @@ export default function Config({ admin }: { admin: boolean }) {
           <div className="flex gap-x-1">
             <button
               className={`${
-                rounds.s
+                _rounds.s
                   ? "bg-yellow-500 text-white scale-125 z-10"
                   : "bg-white text-black"
               } px-4 py-2.5 rounded-xl w-full transform transition-all`}
@@ -62,7 +80,7 @@ export default function Config({ admin }: { admin: boolean }) {
             </button>
             <button
               className={`${
-                rounds.n
+                _rounds.n
                   ? "bg-blue-500 text-white scale-125 z-10"
                   : "bg-white text-black"
               } px-4 py-2.5 rounded-xl w-full transform transition-all`}
@@ -72,7 +90,7 @@ export default function Config({ admin }: { admin: boolean }) {
             </button>
             <button
               className={`${
-                rounds.l
+                _rounds.l
                   ? "bg-purple-500 text-white scale-125 z-10"
                   : "bg-white text-black"
               } px-4 py-2.5 rounded-xl w-full transform transition-all`}
@@ -126,7 +144,7 @@ export default function Config({ admin }: { admin: boolean }) {
             onEnter={() => {}}
           />
         </div>
-        <Btn type={t.Success} content="&rarr; start game" click={startgame} />
+        <Btn type={t.Success} content="&rarr; start game" click={startGame} />
       </div>
     );
   } else {

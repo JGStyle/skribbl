@@ -1,5 +1,6 @@
 import Btn from "../components/default/Btn";
 import { variation as t } from "../components/default/Btn";
+import Footer from "../components/default/Footer";
 
 export default function Home() {
   function createRoom() {
@@ -9,12 +10,34 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-main text-white">
       <div className="text-center w-2/3 flex flex-col">
-        <h1 className="text-9xl font-black inline-block">skribbl</h1>
+        <h1
+          style={{ color: "transparent" }}
+          className="text-9xl block font-black bg-gradient-to-r bg-clip-text text-tran from-pink-400 via-purple-400 to-indigo-500"
+        >
+          skribbl
+        </h1>
         <h2 className="text-4xl font-bold mb-8 text-center inline-block">
-          <span className="text-blue-500 mr-2">you draw</span>
+          <span
+            className="bg-gradient-to-r bg-clip-text text-tran from-pink-400 via-purple-400 to-indigo-500"
+            style={{ color: "transparent" }}
+          >
+            you draw
+          </span>{" "}
           the word that is given to you while the{" "}
-          <span className="text-blue-500">others</span> try to{" "}
-          <span className="text-blue-500">guess</span> it
+          <span
+            className="bg-gradient-to-r bg-clip-text text-tran from-pink-400 via-purple-400 to-indigo-500"
+            style={{ color: "transparent" }}
+          >
+            others
+          </span>{" "}
+          try to{" "}
+          <span
+            className="bg-gradient-to-r bg-clip-text text-tran from-pink-400 via-purple-400 to-indigo-500"
+            style={{ color: "transparent" }}
+          >
+            guess
+          </span>{" "}
+          it
         </h2>
         <div>
           <Btn
@@ -24,22 +47,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <footer className="absolute bottom-2">
-        Made with &#9825; by
-        <a
-          href="https://github.com/JGStyle"
-          className="ml-1 mr-1 text-blue-500 hover:underline"
-        >
-          Josef Schmid
-        </a>
-        and
-        <a
-          href="https://github.com/smorrin28"
-          className="ml-1 mr-1 text-blue-500 hover:underline"
-        >
-          Simon Morin
-        </a>
-      </footer>
+      <Footer />
     </div>
   );
 }

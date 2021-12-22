@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import Game from "./models/Game";
 import Message from "./models/Message";
 import Player from "./models/Player";
 
@@ -30,4 +31,14 @@ export const selfAtom = atom<Player>({
 export const canvasAtom = atom<object>({
   key: "canvas",
   default: {},
+});
+
+export const gameAtom = atom<Game>({
+  key: "game",
+  default: {
+    name: "game",
+    timePerRound: 0,
+    rounds: -1,
+    activeWord: "",
+  },
 });
