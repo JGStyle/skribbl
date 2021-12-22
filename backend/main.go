@@ -113,7 +113,6 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int) {
 				case "game:turnout":
 				case "game:over":
 				case "game:select":
-					
 				}
 			}
 		
