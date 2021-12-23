@@ -27,8 +27,8 @@ export default function Lobby() {
   }, [game]);
 
   function startGame(payload: {}) {
-    // console.log(payload);
-    // router.push("/game");
+    console.log(payload);
+    router.push("/game");
   }
 
   function sendMessage(m: string) {
