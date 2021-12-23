@@ -15,7 +15,7 @@ export default function Profile({ player }: { player: Player }) {
       <div>
         <div
           className="h-10 w-10 group-hover:h-24 group-hover:w-24 transition-all mr-3 rounded-lg"
-          style={{ outline: `solid 4px ${color}` }}
+          style={{ border: `solid 4px ${color}` }}
         >
           <ProfileCanvas profile={profile} />
         </div>
@@ -42,7 +42,7 @@ export default function Profile({ player }: { player: Player }) {
 
 function ProfileCanvas({ profile }: { profile: string }) {
   useEffect(() => {}, []);
-  return <img src={profile} alt="profile" />;
+  return <img className="rounded-lg" src={profile} alt="profile" />;
 }
 
 function StatusIndicator({
