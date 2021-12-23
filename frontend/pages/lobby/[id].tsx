@@ -27,8 +27,17 @@ export default function Lobby() {
   }, [game]);
 
   function startGame(payload: {}) {
-    console.log(payload);
-    router.push("/game");
+    socket?.send(JSON.stringify({ event: "lobby:start", payload }));
+    setGame({
+      // @ts-ignore
+      name: payload.name,
+      // @ts-ignore
+      rounds: payload.rounds,
+      // @ts-ignore
+      activeWord: "",
+      // @ts-ignore
+      timePerRound: payload.timePerRound,
+    });
   }
 
   function sendMessage(m: string) {
@@ -78,7 +87,6 @@ export default function Lobby() {
     if (id !== undefined) {
       let url = "wss://skribb.herokuapp.com/ws";
       // let url = "ws://localhost:8080/ws";
-      console.log("ID-G" + id);
       url += `?room=${id}`;
       const ws = new WebSocket(url);
       setSocket(ws);

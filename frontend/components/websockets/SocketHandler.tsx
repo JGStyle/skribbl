@@ -50,7 +50,7 @@ const SocketHandler: FC = ({ children }) => {
               setUserList(newPlayers);
               break;
             case "lobby:start":
-              const { name, rounds, active, timePerRound } = event.Payload;
+              const { name, rounds, active, timePerRound } = event.payload;
               setGame({
                 name: name,
                 rounds: rounds,
@@ -90,6 +90,12 @@ const SocketHandler: FC = ({ children }) => {
               break;
             case "game:over":
               // TODO
+              break;
+            case "canvas:reset":
+              setCanvas({ "trigger-reset": true });
+              break;
+            case "canvas:undo":
+              setCanvas({ "trigger-undo": true });
               break;
           }
         } else {

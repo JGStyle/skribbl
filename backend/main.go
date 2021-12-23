@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -73,7 +74,7 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int, g
 					game.Clients = append(game.Clients[:i], game.Clients[i+1:]...)
 					continue // To make sure the client leaving doesn't recieve the leave event
 				}
-				data := models.EventJSON{ Event: "game:leave", Author: -1, Payload: map[string]interface{}{"user_id": userID}, Room: ""} 
+				data := models.EventJSON{ Event: "game:leave", Author: -1, Payload: map[string]interface{}{"user_id": userID}} 
 				payload, _ := json.Marshal(data)
 				client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: payload, ExcludeUser: -1}
 			}
@@ -119,10 +120,16 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int, g
 					individual, _ := json.Marshal(models.EventJSON{ Event: "lobby:initial", Payload: arr })
 					socket.WriteMessage(websocket.TextMessage, individual)
 				case "lobby:start":
-					// tpr := event.Payload["timePerRound"]
-					// name := event.Payload["name"]
-					// custom := event.Payload["words"]
-					// rounds := event.Payload["rounds"]
+					// TODO: check if player is admin
+					tpr := event.Payload["timePerRound"].(float64)
+					name := event.Payload["name"]
+					custom := event.Payload["words"]
+					rounds := event.Payload["rounds"].(float64)
+					game.Ingame = true
+					game.Name = name.(string)
+					game.TimePerRound = int(tpr)
+					game.CustomWords = strings.Split(custom.(string), ",")
+					game.Rounds = int(rounds)
 
 					for _, client := range game.Clients {
 						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
@@ -133,6 +140,16 @@ func sendEvents(socket *websocket.Conn, channel chan models.Event, userID int, g
 				case "game:turnout":
 				case "game:over":
 				case "game:select":
+				case "canvas:undo":
+					// TODO: check if player is active player
+					for _, client := range game.Clients {
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
+					}
+				case "canvas:redo":
+					// TODO: check if player is active player
+					for _, client := range game.Clients {
+						client <- models.Event{ EventType: websocket.TextMessage, DataBeingSent: newMessage, ExcludeUser: userID }
+					}
 				}
 			}
 		

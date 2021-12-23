@@ -22,19 +22,25 @@ export default function Game() {
   const [activeRound, setActiveRound] = useState(1);
   const [game, setGame] = useRecoilState(gameAtom);
   const [disableCanvas, setDisableCanvas] = useState(false);
-  const [activeWord, setActiveWord] = useState("activeword");
   const [selectWords, setSelectWord] = useState([]);
-  const canvasRef = useRef<CanvasRef>(null);
   const [lastCanvas, setLastCanvas] = useState("");
   const { socket, setSocket } = useContext(SocketContext);
   const [userList, setUserList] = useRecoilState(userListAtom);
   const [messages, setMessages] = useRecoilState(messagesAtom);
   const [self, setSelf] = useRecoilState(selfAtom);
   const [canvas, setCanvas] = useRecoilState(canvasAtom);
+  const canvasRef = useRef<CanvasRef>(null);
 
   useEffect(() => {
     if (Object.keys(canvas).length !== 0) {
-      appendCanvasState(canvas);
+      console.log(canvas);
+      if ("trigger-reset" in canvas) {
+        clearCanvas();
+      } else if ("trigger-undo" in canvas) {
+        undoCanvas();
+      } else {
+        appendCanvasState(canvas);
+      }
     }
   }, [canvas]);
 
@@ -60,7 +66,19 @@ export default function Game() {
   }
 
   function clearCanvas() {
-    canvasRef.current!.resetCanvas();
+    canvasRef.current!.plainReset();
+  }
+
+  function undoCanvas() {
+    canvasRef.current!.plainUndo();
+  }
+
+  function sendUndo() {
+    socket?.send(JSON.stringify({ event: "canvas:undo" }));
+  }
+
+  function sendReset() {
+    socket?.send(JSON.stringify({ event: "canvas:reset" }));
   }
 
   function loadCanvas(data: string, immediate: boolean) {
@@ -128,17 +146,36 @@ export default function Game() {
     );
   }
 
-  useEffect(() => {
-    function handleCanvas(event: any) {
+  function handleCanvasChange(event: any) {
+    setLastCanvas((prev) => {
       let data = getReducedCanvas();
-      if (data !== lastCanvas) {
+      let stringdata = JSON.stringify(data);
+      if (stringdata !== prev) {
+        console.log("called");
         socket?.send(getBitArrayBuffer(data));
       }
-      setLastCanvas(data);
-    }
+      return stringdata;
+    });
 
-    addEventListener("mouseup", handleCanvas);
-    addEventListener("touchend", handleCanvas);
+    // let data = getReducedCanvas();
+    // let stringdata = JSON.stringify(data);
+    // console.log("seperator-------------------");
+    // console.log(stringdata);
+    // console.log(lastCanvas);
+    // console.log(data == lastCanvas);
+    // if (stringdata !== lastCanvas) {
+    //   socket?.send(getBitArrayBuffer(data));
+    // }
+    // setLastCanvas(stringdata);
+  }
+
+  useEffect(() => {
+    console.log("changed:", lastCanvas);
+  }, [lastCanvas]);
+
+  useEffect(() => {
+    addEventListener("mouseup", handleCanvasChange);
+    addEventListener("touchend", handleCanvasChange);
   }, []);
 
   return (
@@ -155,7 +192,9 @@ export default function Game() {
           </div>
           <CanvasUI
             disabled={disableCanvas}
-            word={activeWord}
+            word={game.activeWord}
+            sendReset={sendReset}
+            sendUndo={sendUndo}
             ref={canvasRef}
           />
           <div className="ml-4">

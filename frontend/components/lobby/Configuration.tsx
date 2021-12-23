@@ -46,7 +46,7 @@ export default function Config({
     } else {
       rounds = 9;
     }
-    start({ rounds, roomname, timePerRound, customwords });
+    start({ rounds, name: roomname, timePerRound, words: customwords });
   }
 
   if (admin) {

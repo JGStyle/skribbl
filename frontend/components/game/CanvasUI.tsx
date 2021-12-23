@@ -7,16 +7,25 @@ export default forwardRef(function CanvasUI(
   {
     disabled,
     word,
+    sendUndo,
+    sendReset,
   }: {
     disabled: boolean;
     word: string;
+    sendUndo: () => void;
+    sendReset: () => void;
   },
   ref: Ref<CanvasRef>
 ) {
   const [activeColor, setActiveColor] = useState("#000000");
   const [activeSize, setActiveSize] = useState(9);
 
-  useImperativeHandle(ref, () => ({ getCanvas, loadCanvas, resetCanvas }));
+  useImperativeHandle(ref, () => ({
+    getCanvas,
+    loadCanvas,
+    plainReset,
+    plainUndo,
+  }));
 
   const canvas = useRef<any>(null);
 
@@ -24,14 +33,23 @@ export default forwardRef(function CanvasUI(
 
   function resetCanvas(): void {
     if (!disabled) {
-      canvas.current.clear();
+      plainReset();
+      sendReset();
     }
   }
 
   function undoCanvas(): void {
     if (!disabled) {
-      canvas.current.undo();
+      plainUndo();
+      sendUndo();
     }
+  }
+
+  function plainReset(): void {
+    canvas.current.clear();
+  }
+  function plainUndo(): void {
+    canvas.current.undo();
   }
 
   function getCanvas(): string {
